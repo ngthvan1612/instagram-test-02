@@ -9,30 +9,30 @@ import java.util.Date;
 
 @Data
 public class CreateUserRequest {
-  
-  @NotEmpty(message = "tên người dùng không được trống")
-  private String username;
-  
-  @NotEmpty(message = "mật khẩu không được trống")
-  private String password;
-  
-  
-  private String displayName;
-  
-  
-  private Date birthday;
-  
-  
-  private String avatar;
-  
-  
-  private String profile;
-  
-  
-  private UserGender gender;
-  
-  
-  private UserRole role;
-  
-  
+
+    @NotEmpty(message = "tên người dùng không được trống")
+    private String username;
+
+    @NotEmpty(message = "mật khẩu không được trống")
+    private String password;
+
+
+    private String displayName;
+
+
+    private Date birthday;
+
+
+    private String avatar;
+
+
+    private String profile;
+
+
+    private UserGender gender;
+
+
+    private UserRole role;
+
+
 }

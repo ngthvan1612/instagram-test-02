@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/auth/signup")
 public class SignupController {
-  public SignupController() {
+    public SignupController() {
 
-  }
+    }
 }

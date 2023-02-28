@@ -9,11 +9,15 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface PostService {
-  SuccessfulResponse createPost(CreatePostRequest request);
-  GetPostResponse getPostById(Integer id);
-  ListPostResponse searchPosts(Map<String, String> queries);
-  SuccessfulResponse updatePost(UpdatePostRequest request);
-  SuccessfulResponse deletePost(Integer id);
+    SuccessfulResponse createPost(CreatePostRequest request);
+
+    GetPostResponse getPostById(Integer id);
+
+    ListPostResponse searchPosts(Map<String, String> queries);
+
+    SuccessfulResponse updatePost(UpdatePostRequest request);
+
+    SuccessfulResponse deletePost(Integer id);
 
 
 }

@@ -19,39 +19,39 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ServiceExceptionResolver extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler(value = { ServiceExceptionBase.class })
-  protected ResponseEntity<Object> handleServiceExceptionBase(RuntimeException ex, WebRequest request) {
+    @ExceptionHandler(value = {ServiceExceptionBase.class})
+    protected ResponseEntity<Object> handleServiceExceptionBase(RuntimeException ex, WebRequest request) {
 
-    ServiceExceptionResponse serviceExceptionResponse = ((ServiceExceptionBase)ex).getServiceExceptionResponse();
+        ServiceExceptionResponse serviceExceptionResponse = ((ServiceExceptionBase) ex).getServiceExceptionResponse();
 
-    return handleExceptionInternal(ex, serviceExceptionResponse,
-            new HttpHeaders(), serviceExceptionResponse.getStatusCode(), request);
-  }
+        return handleExceptionInternal(ex, serviceExceptionResponse,
+                new HttpHeaders(), serviceExceptionResponse.getStatusCode(), request);
+    }
 
-  @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    List<Violation> errors = ex.getBindingResult().getFieldErrors().stream()
-            .map(x -> new Violation(x.getField(), x.getDefaultMessage()))
-            .collect(Collectors.toList());
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<Violation> errors = ex.getBindingResult().getFieldErrors().stream()
+                .map(x -> new Violation(x.getField(), x.getDefaultMessage()))
+                .collect(Collectors.toList());
 
-    ServiceExceptionResponse response = ServiceExceptionFactory.badRequest()
-            .addMessage("Lỗi validation")
-            .withData(errors)
-            .getServiceExceptionResponse();
+        ServiceExceptionResponse response = ServiceExceptionFactory.badRequest()
+                .addMessage("Lỗi validation")
+                .withData(errors)
+                .getServiceExceptionResponse();
 
-    return handleExceptionInternal(ex, response,
-            new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-  }
+        return handleExceptionInternal(ex, response,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 
-  @ExceptionHandler(value = { RuntimeException.class })
-  protected ResponseEntity<Object> handleAllExceptions(RuntimeException ex, WebRequest request) {
+    @ExceptionHandler(value = {RuntimeException.class})
+    protected ResponseEntity<Object> handleAllExceptions(RuntimeException ex, WebRequest request) {
 
-    ServiceExceptionResponse responseBody = ServiceExceptionFactory.badRequest()
-            .addMessage("Lỗi hệ thống")
-            .withData(ex)
-            .getServiceExceptionResponse();
+        ServiceExceptionResponse responseBody = ServiceExceptionFactory.badRequest()
+                .addMessage("Lỗi hệ thống")
+                .withData(ex)
+                .getServiceExceptionResponse();
 
-    return handleExceptionInternal(ex, responseBody,
-            new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
-  }
+        return handleExceptionInternal(ex, responseBody,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
 }

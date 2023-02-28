@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class CreateUserGroupMessageRequest {
-  
-  private Integer groupId;
-  private Integer memberId;
-  
+
+    private Integer groupId;
+    private Integer memberId;
+
 }

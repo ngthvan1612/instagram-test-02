@@ -14,10 +14,9 @@ import java.util.Map;
 
 @Repository
 public class ExtendReactionRepositoryImpl extends ExtendEntityRepositoryBase<Reaction> implements ExtendReactionRepository {
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
-
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<Reaction> searchReaction(Map<String, String> queries) {

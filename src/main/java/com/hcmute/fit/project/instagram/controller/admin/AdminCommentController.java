@@ -19,57 +19,57 @@ import java.util.Map;
 @RequestMapping("api/admin/comment")
 public class AdminCommentController {
 
-  @Autowired
-  private CommentService commentService;
+    @Autowired
+    private CommentService commentService;
 
-  public AdminCommentController() {
+    public AdminCommentController() {
 
-  }
+    }
 
-  @GetMapping("")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract searchComment(
-    @RequestParam Map<String, String> queries
-  ) {
-    ListCommentResponse listCommentResponse = this.commentService.searchComments(queries);
-    return listCommentResponse;
-  }
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract searchComment(
+            @RequestParam Map<String, String> queries
+    ) {
+        ListCommentResponse listCommentResponse = this.commentService.searchComments(queries);
+        return listCommentResponse;
+    }
 
-  @GetMapping("{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract getComment(
-    @PathVariable Integer id
-  ) {
-    GetCommentResponse getCommentResponse = this.commentService.getCommentById(id);
-    return getCommentResponse;
-  }
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract getComment(
+            @PathVariable Integer id
+    ) {
+        GetCommentResponse getCommentResponse = this.commentService.getCommentById(id);
+        return getCommentResponse;
+    }
 
-  @PostMapping("")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseBaseAbstract createComment(
-    @RequestBody CreateCommentRequest request
-  ) {
-    SuccessfulResponse createCommentResponse = this.commentService.createComment(request);
-    return createCommentResponse;
-  }
-  
-  @PutMapping("{id}/update")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract updateComment(
-    @PathVariable Integer id,
-    @RequestBody UpdateCommentRequest request
-  ) {
-    request.setCommentId(id);
-    SuccessfulResponse updateCommentResponse = this.commentService.updateComment(request);
-    return updateCommentResponse;
-  }
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseBaseAbstract createComment(
+            @RequestBody CreateCommentRequest request
+    ) {
+        SuccessfulResponse createCommentResponse = this.commentService.createComment(request);
+        return createCommentResponse;
+    }
 
-  @DeleteMapping("{id}/delete")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract deleteComment(
-    @PathVariable Integer id
-  ) {
-    SuccessfulResponse updateCommentResponse = this.commentService.deleteComment(id);
-    return updateCommentResponse;
-  }
+    @PutMapping("{id}/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract updateComment(
+            @PathVariable Integer id,
+            @RequestBody UpdateCommentRequest request
+    ) {
+        request.setCommentId(id);
+        SuccessfulResponse updateCommentResponse = this.commentService.updateComment(request);
+        return updateCommentResponse;
+    }
+
+    @DeleteMapping("{id}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract deleteComment(
+            @PathVariable Integer id
+    ) {
+        SuccessfulResponse updateCommentResponse = this.commentService.deleteComment(id);
+        return updateCommentResponse;
+    }
 }

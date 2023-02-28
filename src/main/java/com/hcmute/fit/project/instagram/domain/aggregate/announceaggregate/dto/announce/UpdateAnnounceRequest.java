@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 public class UpdateAnnounceRequest {
-  @JsonIgnore
-  private Integer announceId;
-  
-  private String content;
-  private Boolean seen;
-  
-  private Integer userId;
+    @JsonIgnore
+    private Integer announceId;
+
+    private String content;
+    private Boolean seen;
+
+    private Integer userId;
 }

@@ -6,37 +6,37 @@ import lombok.Data;
 import java.util.Date;
 
 /**
-  * Data transfer object (DTO) for UserTagFriendPost
-*/
+ * Data transfer object (DTO) for UserTagFriendPost
+ */
 @Data
 public class UserTagFriendPostResponse {
-  
-  private Integer id;
-  
-  private Date createdAt;
-  
-  private Date lastUpdatedAt;
-  
-  private Date deletedAt;
-  
-  private Integer postId;
-  
-  private Integer friendId;
-  
 
-  public UserTagFriendPostResponse(UserTagFriendPost userTagFriendPost) {
-    
-    this.id = userTagFriendPost.getId();
-    this.createdAt = userTagFriendPost.getCreatedAt();
-    this.lastUpdatedAt = userTagFriendPost.getLastUpdatedAt();
-    this.deletedAt = userTagFriendPost.getDeletedAt();
-    if (userTagFriendPost.getPost() != null) {
-      this.postId = userTagFriendPost.getPost().getId();
+    private Integer id;
+
+    private Date createdAt;
+
+    private Date lastUpdatedAt;
+
+    private Date deletedAt;
+
+    private Integer postId;
+
+    private Integer friendId;
+
+
+    public UserTagFriendPostResponse(UserTagFriendPost userTagFriendPost) {
+
+        this.id = userTagFriendPost.getId();
+        this.createdAt = userTagFriendPost.getCreatedAt();
+        this.lastUpdatedAt = userTagFriendPost.getLastUpdatedAt();
+        this.deletedAt = userTagFriendPost.getDeletedAt();
+        if (userTagFriendPost.getPost() != null) {
+            this.postId = userTagFriendPost.getPost().getId();
+        }
+
+        if (userTagFriendPost.getFriend() != null) {
+            this.friendId = userTagFriendPost.getFriend().getId();
+        }
+
     }
-    
-    if (userTagFriendPost.getFriend() != null) {
-      this.friendId = userTagFriendPost.getFriend().getId();
-    }
-    
-  }
 }

@@ -5,12 +5,12 @@ import lombok.Data;
 
 @Data
 public class UpdateCommentRequest {
-  @JsonIgnore
-  private Integer commentId;
-  
-  private String content;
-  
-  private Integer userId;
-  private Integer postId;
-  private Integer parentId;
+    @JsonIgnore
+    private Integer commentId;
+
+    private String content;
+
+    private Integer userId;
+    private Integer postId;
+    private Integer parentId;
 }

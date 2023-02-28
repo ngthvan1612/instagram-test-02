@@ -5,8 +5,8 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.List;
 
 public class ListReactionResponse extends SuccessfulResponse {
-  public ListReactionResponse(List<ReactionResponse> reactionResponses) {
-    super();
-    this.setData(reactionResponses);
-  }
+    public ListReactionResponse(List<ReactionResponse> reactionResponses) {
+        super();
+        this.setData(reactionResponses);
+    }
 }

@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class CreateAnnounceRequest {
-  
-  
-  private String content;
-  
-  
-  private Boolean seen;
-  
-  private Integer userId;
-  
+
+
+    private String content;
+
+
+    private Boolean seen;
+
+    private Integer userId;
+
 }

@@ -9,11 +9,15 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface FollowerService {
-  SuccessfulResponse createFollower(CreateFollowerRequest request);
-  GetFollowerResponse getFollowerById(Integer id);
-  ListFollowerResponse searchFollowers(Map<String, String> queries);
-  SuccessfulResponse updateFollower(UpdateFollowerRequest request);
-  SuccessfulResponse deleteFollower(Integer id);
+    SuccessfulResponse createFollower(CreateFollowerRequest request);
+
+    GetFollowerResponse getFollowerById(Integer id);
+
+    ListFollowerResponse searchFollowers(Map<String, String> queries);
+
+    SuccessfulResponse updateFollower(UpdateFollowerRequest request);
+
+    SuccessfulResponse deleteFollower(Integer id);
 
 
 }

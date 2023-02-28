@@ -9,11 +9,15 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface CommentService {
-  SuccessfulResponse createComment(CreateCommentRequest request);
-  GetCommentResponse getCommentById(Integer id);
-  ListCommentResponse searchComments(Map<String, String> queries);
-  SuccessfulResponse updateComment(UpdateCommentRequest request);
-  SuccessfulResponse deleteComment(Integer id);
+    SuccessfulResponse createComment(CreateCommentRequest request);
+
+    GetCommentResponse getCommentById(Integer id);
+
+    ListCommentResponse searchComments(Map<String, String> queries);
+
+    SuccessfulResponse updateComment(UpdateCommentRequest request);
+
+    SuccessfulResponse deleteComment(Integer id);
 
 
 }

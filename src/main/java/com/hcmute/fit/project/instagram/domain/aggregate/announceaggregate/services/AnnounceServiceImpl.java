@@ -6,9 +6,12 @@ import com.hcmute.fit.project.instagram.domain.aggregate.announceaggregate.repos
 import com.hcmute.fit.project.instagram.domain.aggregate.announceaggregate.services.interfaces.AnnounceService;
 import com.hcmute.fit.project.instagram.domain.aggregate.useraggregate.entities.User;
 import com.hcmute.fit.project.instagram.domain.aggregate.useraggregate.repositories.UserRepository;
+import com.hcmute.fit.project.instagram.domain.aggregate.useraggregate.services.UserServiceImpl;
 import com.hcmute.fit.project.instagram.domain.base.StorageRepository;
 import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import com.hcmute.fit.project.instagram.domain.exception.ServiceExceptionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,157 +22,158 @@ import java.util.Optional;
 
 @Service
 public class AnnounceServiceImpl implements AnnounceService {
-  
-  @Autowired
-  private AnnounceRepository announceRepository;
-  
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
-  private StorageRepository storageRepository;
+    private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
-  public AnnounceServiceImpl() {
+    @Autowired
+    private AnnounceRepository announceRepository;
 
-  }
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private StorageRepository storageRepository;
 
-  //TODO: Validate with annotation
-  //TODO: check fk before create & update
-  //TODO: update unique column for delete
-  //TODO: swagger
-  //TODO: authorize
-  //TODO: hash password
-  //TODO: loggggggggg
+    public AnnounceServiceImpl() {
 
-  @Override
-  public SuccessfulResponse createAnnounce(CreateAnnounceRequest request) {
-    //Validate
-    
-
-    //Check null
-    
-    Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
-    User user = null;
-    
-    if (optionalUser.isEmpty()) {
-      throw ServiceExceptionFactory.badRequest()
-        .addMessage("Không tồn tại người dùng nào với userId = " + request.getUserId());
-    }
-    else {
-      user = optionalUser.get();
-    }
-    
-    
-    Announce announce = new Announce();
-    
-    announce.setContent(request.getContent());
-    announce.setSeen(request.getSeen());
-    announce.setUser(user);
-
-    //Save to database
-    this.announceRepository.save(announce);
-
-    //Return
-    AnnounceResponse announceDTO = new AnnounceResponse(announce);
-    SuccessfulResponse response = new SuccessfulResponse();
-
-    response.setData(announceDTO);
-    response.addMessage("Tạo Thông báo thành công");
-
-    return response;
-  }
-
-  @Override
-  public GetAnnounceResponse getAnnounceById(Integer id) {
-    if (!this.announceRepository.existsById(id)) {
-      throw ServiceExceptionFactory.notFound()
-        .addMessage("Không tìm thấy Thông báo nào với id là " + id);
     }
 
-    Announce announce = this.announceRepository.findById(id).get();
-    AnnounceResponse announceDTO = new AnnounceResponse(announce);
-    GetAnnounceResponse response = new GetAnnounceResponse(announceDTO);
+    //TODO: Validate with annotation
+    //TODO: check fk before create & update
+    //TODO: update unique column for delete
+    //TODO: swagger
+    //TODO: authorize
+    //TODO: hash password
+    //TODO: loggggggggg
 
-    response.addMessage("Lấy dữ liệu thành công");
+    @Override
+    public SuccessfulResponse createAnnounce(CreateAnnounceRequest request) {
+        //Validate
 
-    return response;
-  }
 
-  @Override
-  public ListAnnounceResponse searchAnnounces(Map<String, String> queries) {
-    List<AnnounceResponse> listAnnounceResponses = this.announceRepository.searchAnnounce(queries)
-          .stream().map(announce -> new AnnounceResponse(announce)).toList();
-    
-    ListAnnounceResponse response = new ListAnnounceResponse(listAnnounceResponses);
-    response.addMessage("Lấy dữ liệu thành công");
+        //Check null
 
-    return response;
-  }
+        Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
+        User user = null;
 
-  @Override
-  public SuccessfulResponse updateAnnounce(UpdateAnnounceRequest request) {
-    //Check record exists
-    if (!this.announceRepository.existsById(request.getAnnounceId())) {
-      throw ServiceExceptionFactory.notFound()
-        .addMessage("Không tìm thấy Thông báo nào với id là " + request.getAnnounceId());
+        if (optionalUser.isEmpty()) {
+            throw ServiceExceptionFactory.badRequest()
+                    .addMessage("Không tồn tại người dùng nào với userId = " + request.getUserId());
+        } else {
+            user = optionalUser.get();
+        }
+
+
+        Announce announce = new Announce();
+
+        announce.setContent(request.getContent());
+        announce.setSeen(request.getSeen());
+        announce.setUser(user);
+
+        //Save to database
+        this.announceRepository.save(announce);
+
+        //Return
+        AnnounceResponse announceDTO = new AnnounceResponse(announce);
+        SuccessfulResponse response = new SuccessfulResponse();
+
+        response.setData(announceDTO);
+        response.addMessage("Tạo Thông báo thành công");
+
+        LOG.info("Created announce with id = " + announce.getId());
+        return response;
     }
 
-    //Read data from request
-    Announce announce = this.announceRepository.findById(request.getAnnounceId()).get();
-    
-    Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
-    User user = null;
-    
-    if (optionalUser.isEmpty()) { 
-      throw ServiceExceptionFactory.badRequest()
-        .addMessage("Không tồn tại Thông báo nào với userId = " + request.getUserId());
-    }
-    else {
-      user = optionalUser.get();
-    }
-    
-    
-    
-    announce.setContent(request.getContent());
-    announce.setSeen(request.getSeen());
-    announce.setUser(user);
+    @Override
+    public GetAnnounceResponse getAnnounceById(Integer id) {
+        if (!this.announceRepository.existsById(id)) {
+            throw ServiceExceptionFactory.notFound()
+                    .addMessage("Không tìm thấy Thông báo nào với id là " + id);
+        }
 
-    //Validate unique
-    
+        Announce announce = this.announceRepository.findById(id).get();
+        AnnounceResponse announceDTO = new AnnounceResponse(announce);
+        GetAnnounceResponse response = new GetAnnounceResponse(announceDTO);
 
-    //Update last changed time
-    announce.setLastUpdatedAt(new Date());
+        response.addMessage("Lấy dữ liệu thành công");
 
-    //Store
-    this.announceRepository.save(announce);
-
-    //Return
-    AnnounceResponse announceDTO = new AnnounceResponse(announce);
-    SuccessfulResponse response = new SuccessfulResponse();
-
-    response.setData(announceDTO);
-    response.addMessage("Cập nhật Thông báo thành công");
-
-    return response;
-  }
-  
-
-  @Override
-  public SuccessfulResponse deleteAnnounce(Integer id) {
-    if (!this.announceRepository.existsById(id)) {
-      throw ServiceExceptionFactory.notFound()
-        .addMessage("Không tìm thấy Thông báo nào với id là " + id);
+        return response;
     }
 
-    Announce announce = this.announceRepository.findById(id).get();
-    announce.setDeletedAt(new Date());
-    
-    this.announceRepository.save(announce);
+    @Override
+    public ListAnnounceResponse searchAnnounces(Map<String, String> queries) {
+        List<AnnounceResponse> listAnnounceResponses = this.announceRepository.searchAnnounce(queries)
+                .stream().map(announce -> new AnnounceResponse(announce)).toList();
 
-    SuccessfulResponse response = new SuccessfulResponse();
-    response.addMessage("Xóa Thông báo thành công");
+        ListAnnounceResponse response = new ListAnnounceResponse(listAnnounceResponses);
+        response.addMessage("Lấy dữ liệu thành công");
 
-    return response;
-  }
-  
+        return response;
+    }
+
+    @Override
+    public SuccessfulResponse updateAnnounce(UpdateAnnounceRequest request) {
+        //Check record exists
+        if (!this.announceRepository.existsById(request.getAnnounceId())) {
+            throw ServiceExceptionFactory.notFound()
+                    .addMessage("Không tìm thấy Thông báo nào với id là " + request.getAnnounceId());
+        }
+
+        //Read data from request
+        Announce announce = this.announceRepository.findById(request.getAnnounceId()).get();
+
+        Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
+        User user = null;
+
+        if (optionalUser.isEmpty()) {
+            throw ServiceExceptionFactory.badRequest()
+                    .addMessage("Không tồn tại Thông báo nào với userId = " + request.getUserId());
+        } else {
+            user = optionalUser.get();
+        }
+
+
+        announce.setContent(request.getContent());
+        announce.setSeen(request.getSeen());
+        announce.setUser(user);
+
+        //Validate unique
+
+
+        //Update last changed time
+        announce.setLastUpdatedAt(new Date());
+
+        //Store
+        this.announceRepository.save(announce);
+
+        //Return
+        AnnounceResponse announceDTO = new AnnounceResponse(announce);
+        SuccessfulResponse response = new SuccessfulResponse();
+
+        response.setData(announceDTO);
+        response.addMessage("Cập nhật Thông báo thành công");
+
+        LOG.info("Updated announce with id = " + announce.getId());
+        return response;
+    }
+
+
+    @Override
+    public SuccessfulResponse deleteAnnounce(Integer id) {
+        if (!this.announceRepository.existsById(id)) {
+            throw ServiceExceptionFactory.notFound()
+                    .addMessage("Không tìm thấy Thông báo nào với id là " + id);
+        }
+
+        Announce announce = this.announceRepository.findById(id).get();
+        announce.setDeletedAt(new Date());
+
+        this.announceRepository.save(announce);
+
+        SuccessfulResponse response = new SuccessfulResponse();
+        response.addMessage("Xóa Thông báo thành công");
+
+        LOG.info("Deleted announce with id = " + announce.getId());
+        return response;
+    }
+
 }
   

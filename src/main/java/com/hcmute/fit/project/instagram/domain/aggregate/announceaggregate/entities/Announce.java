@@ -10,29 +10,29 @@ import java.util.Date;
 @Entity
 @Table(name = "tbl_announce")
 public class Announce {
-  
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
-  
-  @Column(name = "createdAt")
-  private Date createdAt = new Date();
-  
-  @Column(name = "lastUpdatedAt")
-  private Date lastUpdatedAt = new Date();
-  
-  @Column(name = "deletedAt")
-  private Date deletedAt;
-  
-  @Column(name = "content")
-  private String content;
-  
-  @Column(name = "seen")
-  private Boolean seen;
-  
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private User user;
-  
-  
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "createdAt")
+    private Date createdAt = new Date();
+
+    @Column(name = "lastUpdatedAt")
+    private Date lastUpdatedAt = new Date();
+
+    @Column(name = "deletedAt")
+    private Date deletedAt;
+
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "seen")
+    private Boolean seen;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
 }

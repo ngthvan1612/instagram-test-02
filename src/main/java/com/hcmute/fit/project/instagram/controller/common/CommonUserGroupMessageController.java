@@ -20,57 +20,57 @@ import java.util.Map;
 @RequestMapping("api/common/user-group-message")
 public class CommonUserGroupMessageController {
 
-  @Autowired
-  private UserGroupMessageService userGroupMessageService;
+    @Autowired
+    private UserGroupMessageService userGroupMessageService;
 
-  public CommonUserGroupMessageController() {
+    public CommonUserGroupMessageController() {
 
-  }
+    }
 
-  @GetMapping("")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract searchUserGroupMessage(
-    @RequestParam Map<String, String> queries
-  ) {
-    ListUserGroupMessageResponse listUserGroupMessageResponse = this.userGroupMessageService.searchUserGroupMessages(queries);
-    return listUserGroupMessageResponse;
-  }
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract searchUserGroupMessage(
+            @RequestParam Map<String, String> queries
+    ) {
+        ListUserGroupMessageResponse listUserGroupMessageResponse = this.userGroupMessageService.searchUserGroupMessages(queries);
+        return listUserGroupMessageResponse;
+    }
 
-  @GetMapping("{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract getUserGroupMessage(
-    @PathVariable Integer id
-  ) {
-    GetUserGroupMessageResponse getUserGroupMessageResponse = this.userGroupMessageService.getUserGroupMessageById(id);
-    return getUserGroupMessageResponse;
-  }
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract getUserGroupMessage(
+            @PathVariable Integer id
+    ) {
+        GetUserGroupMessageResponse getUserGroupMessageResponse = this.userGroupMessageService.getUserGroupMessageById(id);
+        return getUserGroupMessageResponse;
+    }
 
-  @PostMapping("")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseBaseAbstract createUserGroupMessage(
-    @RequestBody @Valid CreateUserGroupMessageRequest request
-  ) {
-    SuccessfulResponse createUserGroupMessageResponse = this.userGroupMessageService.createUserGroupMessage(request);
-    return createUserGroupMessageResponse;
-  }
-  
-  @PutMapping("{id}/update")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract updateUserGroupMessage(
-    @PathVariable Integer id,
-    @RequestBody @Valid UpdateUserGroupMessageRequest request
-  ) {
-    request.setUserGroupMessageId(id);
-    SuccessfulResponse updateUserGroupMessageResponse = this.userGroupMessageService.updateUserGroupMessage(request);
-    return updateUserGroupMessageResponse;
-  }
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseBaseAbstract createUserGroupMessage(
+            @RequestBody @Valid CreateUserGroupMessageRequest request
+    ) {
+        SuccessfulResponse createUserGroupMessageResponse = this.userGroupMessageService.createUserGroupMessage(request);
+        return createUserGroupMessageResponse;
+    }
 
-  @DeleteMapping("{id}/delete")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract deleteUserGroupMessage(
-    @PathVariable Integer id
-  ) {
-    SuccessfulResponse updateUserGroupMessageResponse = this.userGroupMessageService.deleteUserGroupMessage(id);
-    return updateUserGroupMessageResponse;
-  }
+    @PutMapping("{id}/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract updateUserGroupMessage(
+            @PathVariable Integer id,
+            @RequestBody @Valid UpdateUserGroupMessageRequest request
+    ) {
+        request.setUserGroupMessageId(id);
+        SuccessfulResponse updateUserGroupMessageResponse = this.userGroupMessageService.updateUserGroupMessage(request);
+        return updateUserGroupMessageResponse;
+    }
+
+    @DeleteMapping("{id}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract deleteUserGroupMessage(
+            @PathVariable Integer id
+    ) {
+        SuccessfulResponse updateUserGroupMessageResponse = this.userGroupMessageService.deleteUserGroupMessage(id);
+        return updateUserGroupMessageResponse;
+    }
 }

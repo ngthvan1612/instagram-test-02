@@ -6,11 +6,11 @@ import lombok.Data;
 
 @Data
 public class UpdatePostRequest {
-  @JsonIgnore
-  private Integer postId;
-  
-  private String content;
-  private PostPrivacy privacy;
-  
-  private Integer authorId;
+    @JsonIgnore
+    private Integer postId;
+
+    private String content;
+    private PostPrivacy privacy;
+
+    private Integer authorId;
 }

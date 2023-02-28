@@ -19,57 +19,57 @@ import java.util.Map;
 @RequestMapping("api/admin/group-message")
 public class AdminGroupMessageController {
 
-  @Autowired
-  private GroupMessageService groupMessageService;
+    @Autowired
+    private GroupMessageService groupMessageService;
 
-  public AdminGroupMessageController() {
+    public AdminGroupMessageController() {
 
-  }
+    }
 
-  @GetMapping("")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract searchGroupMessage(
-    @RequestParam Map<String, String> queries
-  ) {
-    ListGroupMessageResponse listGroupMessageResponse = this.groupMessageService.searchGroupMessages(queries);
-    return listGroupMessageResponse;
-  }
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract searchGroupMessage(
+            @RequestParam Map<String, String> queries
+    ) {
+        ListGroupMessageResponse listGroupMessageResponse = this.groupMessageService.searchGroupMessages(queries);
+        return listGroupMessageResponse;
+    }
 
-  @GetMapping("{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract getGroupMessage(
-    @PathVariable Integer id
-  ) {
-    GetGroupMessageResponse getGroupMessageResponse = this.groupMessageService.getGroupMessageById(id);
-    return getGroupMessageResponse;
-  }
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract getGroupMessage(
+            @PathVariable Integer id
+    ) {
+        GetGroupMessageResponse getGroupMessageResponse = this.groupMessageService.getGroupMessageById(id);
+        return getGroupMessageResponse;
+    }
 
-  @PostMapping("")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseBaseAbstract createGroupMessage(
-    @RequestBody CreateGroupMessageRequest request
-  ) {
-    SuccessfulResponse createGroupMessageResponse = this.groupMessageService.createGroupMessage(request);
-    return createGroupMessageResponse;
-  }
-  
-  @PutMapping("{id}/update")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract updateGroupMessage(
-    @PathVariable Integer id,
-    @RequestBody UpdateGroupMessageRequest request
-  ) {
-    request.setGroupMessageId(id);
-    SuccessfulResponse updateGroupMessageResponse = this.groupMessageService.updateGroupMessage(request);
-    return updateGroupMessageResponse;
-  }
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseBaseAbstract createGroupMessage(
+            @RequestBody CreateGroupMessageRequest request
+    ) {
+        SuccessfulResponse createGroupMessageResponse = this.groupMessageService.createGroupMessage(request);
+        return createGroupMessageResponse;
+    }
 
-  @DeleteMapping("{id}/delete")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract deleteGroupMessage(
-    @PathVariable Integer id
-  ) {
-    SuccessfulResponse updateGroupMessageResponse = this.groupMessageService.deleteGroupMessage(id);
-    return updateGroupMessageResponse;
-  }
+    @PutMapping("{id}/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract updateGroupMessage(
+            @PathVariable Integer id,
+            @RequestBody UpdateGroupMessageRequest request
+    ) {
+        request.setGroupMessageId(id);
+        SuccessfulResponse updateGroupMessageResponse = this.groupMessageService.updateGroupMessage(request);
+        return updateGroupMessageResponse;
+    }
+
+    @DeleteMapping("{id}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract deleteGroupMessage(
+            @PathVariable Integer id
+    ) {
+        SuccessfulResponse updateGroupMessageResponse = this.groupMessageService.deleteGroupMessage(id);
+        return updateGroupMessageResponse;
+    }
 }

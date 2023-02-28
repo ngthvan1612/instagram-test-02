@@ -20,57 +20,57 @@ import java.util.Map;
 @RequestMapping("api/common/follower")
 public class CommonFollowerController {
 
-  @Autowired
-  private FollowerService followerService;
+    @Autowired
+    private FollowerService followerService;
 
-  public CommonFollowerController() {
+    public CommonFollowerController() {
 
-  }
+    }
 
-  @GetMapping("")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract searchFollower(
-    @RequestParam Map<String, String> queries
-  ) {
-    ListFollowerResponse listFollowerResponse = this.followerService.searchFollowers(queries);
-    return listFollowerResponse;
-  }
+    @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract searchFollower(
+            @RequestParam Map<String, String> queries
+    ) {
+        ListFollowerResponse listFollowerResponse = this.followerService.searchFollowers(queries);
+        return listFollowerResponse;
+    }
 
-  @GetMapping("{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract getFollower(
-    @PathVariable Integer id
-  ) {
-    GetFollowerResponse getFollowerResponse = this.followerService.getFollowerById(id);
-    return getFollowerResponse;
-  }
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract getFollower(
+            @PathVariable Integer id
+    ) {
+        GetFollowerResponse getFollowerResponse = this.followerService.getFollowerById(id);
+        return getFollowerResponse;
+    }
 
-  @PostMapping("")
-  @ResponseStatus(HttpStatus.CREATED)
-  public ResponseBaseAbstract createFollower(
-    @RequestBody @Valid CreateFollowerRequest request
-  ) {
-    SuccessfulResponse createFollowerResponse = this.followerService.createFollower(request);
-    return createFollowerResponse;
-  }
-  
-  @PutMapping("{id}/update")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract updateFollower(
-    @PathVariable Integer id,
-    @RequestBody @Valid UpdateFollowerRequest request
-  ) {
-    request.setFollowerId(id);
-    SuccessfulResponse updateFollowerResponse = this.followerService.updateFollower(request);
-    return updateFollowerResponse;
-  }
+    @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseBaseAbstract createFollower(
+            @RequestBody @Valid CreateFollowerRequest request
+    ) {
+        SuccessfulResponse createFollowerResponse = this.followerService.createFollower(request);
+        return createFollowerResponse;
+    }
 
-  @DeleteMapping("{id}/delete")
-  @ResponseStatus(HttpStatus.OK)
-  public ResponseBaseAbstract deleteFollower(
-    @PathVariable Integer id
-  ) {
-    SuccessfulResponse updateFollowerResponse = this.followerService.deleteFollower(id);
-    return updateFollowerResponse;
-  }
+    @PutMapping("{id}/update")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract updateFollower(
+            @PathVariable Integer id,
+            @RequestBody @Valid UpdateFollowerRequest request
+    ) {
+        request.setFollowerId(id);
+        SuccessfulResponse updateFollowerResponse = this.followerService.updateFollower(request);
+        return updateFollowerResponse;
+    }
+
+    @DeleteMapping("{id}/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseBaseAbstract deleteFollower(
+            @PathVariable Integer id
+    ) {
+        SuccessfulResponse updateFollowerResponse = this.followerService.deleteFollower(id);
+        return updateFollowerResponse;
+    }
 }

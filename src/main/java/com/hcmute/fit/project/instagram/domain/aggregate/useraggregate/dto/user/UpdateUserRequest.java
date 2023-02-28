@@ -9,16 +9,16 @@ import java.util.Date;
 
 @Data
 public class UpdateUserRequest {
-  @JsonIgnore
-  private Integer userId;
-  
-  private String username;
-  private String password;
-  private String displayName;
-  private Date birthday;
-  private String avatar;
-  private String profile;
-  private UserGender gender;
-  private UserRole role;
-  
+    @JsonIgnore
+    private Integer userId;
+
+    private String username;
+    private String password;
+    private String displayName;
+    private Date birthday;
+    private String avatar;
+    private String profile;
+    private UserGender gender;
+    private UserRole role;
+
 }

@@ -5,11 +5,11 @@ import lombok.Data;
 
 @Data
 public class CreateReactionRequest {
-  
-  
-  private ReactionType reaction;
-  
-  private Integer userId;
-  private Integer postId;
-  
+
+
+    private ReactionType reaction;
+
+    private Integer userId;
+    private Integer postId;
+
 }
