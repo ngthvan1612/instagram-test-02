@@ -24,182 +24,187 @@ import java.util.Optional;
 
 @Service
 public class ReactionServiceImpl implements ReactionService {
-    private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  
+  @Autowired
+  private ReactionRepository reactionRepository;
+  
+  @Autowired
+  private PostRepository postRepository;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private StorageRepository storageRepository;
 
-    @Autowired
-    private ReactionRepository reactionRepository;
+  public ReactionServiceImpl() {
 
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private StorageRepository storageRepository;
+  }
 
-    public ReactionServiceImpl() {
+  //TODO: Validate with annotation
+  //TODO: check fk before create & update
+  //TODO: update unique column for delete
+  //TODO: swagger
+  //TODO: authorize
+  //TODO: hash password
+  //TODO: loggggggggg
 
+  @Override
+  public SuccessfulResponse createReaction(CreateReactionRequest request) {
+    //Validate
+    
+
+    //Check null
+    
+    Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
+    User user = null;
+    
+    if (optionalUser.isEmpty()) {
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại người dùng nào với userId = " + request.getUserId());
+    }
+    else {
+      user = optionalUser.get();
+    }
+    
+    
+    Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
+    Post post = null;
+    
+    if (optionalPost.isEmpty()) {
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Bài đăng nào với postId = " + request.getPostId());
+    }
+    else {
+      post = optionalPost.get();
+    }
+    
+    
+    Reaction reaction = new Reaction();
+    
+    reaction.setReaction(request.getReaction());
+    reaction.setUser(user);
+    reaction.setPost(post);
+
+    //Save to database
+    this.reactionRepository.save(reaction);
+
+    //Return
+    ReactionResponse reactionDTO = new ReactionResponse(reaction);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(reactionDTO);
+    response.addMessage("Tạo Thả cảm xúc thành công");
+
+    LOG.info("Created reaction with id = " + reaction.getId());
+    return response;
+  }
+
+  @Override
+  public GetReactionResponse getReactionById(Integer id) {
+    if (!this.reactionRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Thả cảm xúc nào với id là " + id);
     }
 
-    //TODO: Validate with annotation
-    //TODO: check fk before create & update
-    //TODO: update unique column for delete
-    //TODO: swagger
-    //TODO: authorize
-    //TODO: hash password
-    //TODO: loggggggggg
+    Reaction reaction = this.reactionRepository.findById(id).get();
+    ReactionResponse reactionDTO = new ReactionResponse(reaction);
+    GetReactionResponse response = new GetReactionResponse(reactionDTO);
 
-    @Override
-    public SuccessfulResponse createReaction(CreateReactionRequest request) {
-        //Validate
+    response.addMessage("Lấy dữ liệu thành công");
 
+    return response;
+  }
 
-        //Check null
+  @Override
+  public ListReactionResponse searchReactions(Map<String, String> queries) {
+    List<ReactionResponse> listReactionResponses = this.reactionRepository.searchReaction(queries)
+          .stream().map(reaction -> new ReactionResponse(reaction)).toList();
+    
+    ListReactionResponse response = new ListReactionResponse(listReactionResponses);
+    response.addMessage("Lấy dữ liệu thành công");
 
-        Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
-        User user = null;
+    return response;
+  }
 
-        if (optionalUser.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại người dùng nào với userId = " + request.getUserId());
-        } else {
-            user = optionalUser.get();
-        }
-
-
-        Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
-        Post post = null;
-
-        if (optionalPost.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Bài đăng nào với postId = " + request.getPostId());
-        } else {
-            post = optionalPost.get();
-        }
-
-
-        Reaction reaction = new Reaction();
-
-        reaction.setReaction(request.getReaction());
-        reaction.setUser(user);
-        reaction.setPost(post);
-
-        //Save to database
-        this.reactionRepository.save(reaction);
-
-        //Return
-        ReactionResponse reactionDTO = new ReactionResponse(reaction);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(reactionDTO);
-        response.addMessage("Tạo Thả cảm xúc thành công");
-
-        LOG.info("Created reaction with id = " + reaction.getId());
-        return response;
+  @Override
+  public SuccessfulResponse updateReaction(UpdateReactionRequest request) {
+    //Check record exists
+    if (!this.reactionRepository.existsById(request.getReactionId())) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Thả cảm xúc nào với id là " + request.getReactionId());
     }
 
-    @Override
-    public GetReactionResponse getReactionById(Integer id) {
-        if (!this.reactionRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Thả cảm xúc nào với id là " + id);
-        }
+    //Read data from request
+    Reaction reaction = this.reactionRepository.findById(request.getReactionId()).get();
+    
+    Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
+    User user = null;
+    
+    if (optionalUser.isEmpty()) { 
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Thả cảm xúc nào với userId = " + request.getUserId());
+    }
+    else {
+      user = optionalUser.get();
+    }
+    
+    
+    Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
+    Post post = null;
+    
+    if (optionalPost.isEmpty()) { 
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Thả cảm xúc nào với postId = " + request.getPostId());
+    }
+    else {
+      post = optionalPost.get();
+    }
+    
+    
+    
+    reaction.setReaction(request.getReaction());
+    reaction.setUser(user);
+    reaction.setPost(post);
 
-        Reaction reaction = this.reactionRepository.findById(id).get();
-        ReactionResponse reactionDTO = new ReactionResponse(reaction);
-        GetReactionResponse response = new GetReactionResponse(reactionDTO);
+    //Validate unique
+    
 
-        response.addMessage("Lấy dữ liệu thành công");
+    //Update last changed time
+    reaction.setLastUpdatedAt(new Date());
 
-        return response;
+    //Store
+    this.reactionRepository.save(reaction);
+
+    //Return
+    ReactionResponse reactionDTO = new ReactionResponse(reaction);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(reactionDTO);
+    response.addMessage("Cập nhật Thả cảm xúc thành công");
+
+    LOG.info("Updated reaction with id = " + reaction.getId());
+    return response;
+  }
+  
+
+  @Override
+  public SuccessfulResponse deleteReaction(Integer id) {
+    if (!this.reactionRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Thả cảm xúc nào với id là " + id);
     }
 
-    @Override
-    public ListReactionResponse searchReactions(Map<String, String> queries) {
-        List<ReactionResponse> listReactionResponses = this.reactionRepository.searchReaction(queries)
-                .stream().map(reaction -> new ReactionResponse(reaction)).toList();
+    Reaction reaction = this.reactionRepository.findById(id).get();
+    reaction.setDeletedAt(new Date());
+    
+    this.reactionRepository.save(reaction);
 
-        ListReactionResponse response = new ListReactionResponse(listReactionResponses);
-        response.addMessage("Lấy dữ liệu thành công");
+    SuccessfulResponse response = new SuccessfulResponse();
+    response.addMessage("Xóa Thả cảm xúc thành công");
 
-        return response;
-    }
-
-    @Override
-    public SuccessfulResponse updateReaction(UpdateReactionRequest request) {
-        //Check record exists
-        if (!this.reactionRepository.existsById(request.getReactionId())) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Thả cảm xúc nào với id là " + request.getReactionId());
-        }
-
-        //Read data from request
-        Reaction reaction = this.reactionRepository.findById(request.getReactionId()).get();
-
-        Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
-        User user = null;
-
-        if (optionalUser.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Thả cảm xúc nào với userId = " + request.getUserId());
-        } else {
-            user = optionalUser.get();
-        }
-
-
-        Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
-        Post post = null;
-
-        if (optionalPost.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Thả cảm xúc nào với postId = " + request.getPostId());
-        } else {
-            post = optionalPost.get();
-        }
-
-
-        reaction.setReaction(request.getReaction());
-        reaction.setUser(user);
-        reaction.setPost(post);
-
-        //Validate unique
-
-
-        //Update last changed time
-        reaction.setLastUpdatedAt(new Date());
-
-        //Store
-        this.reactionRepository.save(reaction);
-
-        //Return
-        ReactionResponse reactionDTO = new ReactionResponse(reaction);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(reactionDTO);
-        response.addMessage("Cập nhật Thả cảm xúc thành công");
-
-        LOG.info("Updated reaction with id = " + reaction.getId());
-        return response;
-    }
-
-
-    @Override
-    public SuccessfulResponse deleteReaction(Integer id) {
-        if (!this.reactionRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Thả cảm xúc nào với id là " + id);
-        }
-
-        Reaction reaction = this.reactionRepository.findById(id).get();
-        reaction.setDeletedAt(new Date());
-
-        this.reactionRepository.save(reaction);
-
-        SuccessfulResponse response = new SuccessfulResponse();
-        response.addMessage("Xóa Thả cảm xúc thành công");
-
-        LOG.info("Deleted reaction with id = " + reaction.getId());
-        return response;
-    }
-
+    LOG.info("Deleted reaction with id = " + reaction.getId());
+    return response;
+  }
+  
 }
   

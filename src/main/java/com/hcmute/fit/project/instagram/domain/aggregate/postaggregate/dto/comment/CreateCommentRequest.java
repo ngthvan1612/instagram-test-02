@@ -4,12 +4,12 @@ import lombok.Data;
 
 @Data
 public class CreateCommentRequest {
-
-
-    private String content;
-
-    private Integer userId;
-    private Integer postId;
-    private Integer parentId;
-
+  
+  
+  private String content;
+  
+  private Integer userId;
+  private Integer postId;
+  private Integer parentId;
+  
 }

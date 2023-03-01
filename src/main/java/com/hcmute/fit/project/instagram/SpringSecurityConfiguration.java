@@ -27,67 +27,67 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SpringSecurityConfiguration {
 
-    @Autowired
-    @Lazy
-    private UserRepository userRepository;
+	@Autowired
+	@Lazy
+	private UserRepository userRepository;
 
-    @Autowired
-    @Lazy
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+	@Autowired
+	@Lazy
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Autowired
-    @Lazy
-    private AuthenticationProvider authenticationProvider;
+	@Autowired
+	@Lazy
+	private AuthenticationProvider authenticationProvider;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/admin/**").hasAuthority(UserRole.ADMIN.name())
-                .requestMatchers("/api/common/**").authenticated()
-                .anyRequest().permitAll()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http
+				.cors()
+				.and()
+				.csrf()
+				.disable()
+				.authorizeHttpRequests()
+				.requestMatchers("/api/admin/**").hasAuthority(UserRole.ADMIN.name())
+				.requestMatchers("/api/common/**").authenticated()
+				.anyRequest().permitAll()
+				.and()
+				.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.authenticationProvider(authenticationProvider)
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
+	}
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                User userEntity = userRepository.getUserByUsername(username);
-                if (userEntity == null) {
-                    throw new UsernameNotFoundException("Not user with username = " + username);
-                }
-                return userEntity;
-            }
-        };
-    }
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return new UserDetailsService() {
+			@Override
+			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+				User userEntity = userRepository.getUserByUsername(username);
+				if (userEntity == null) {
+					throw new UsernameNotFoundException("Not user with username = " + username);
+				}
+				return userEntity;
+			}
+		};
+	}
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(this.userDetailsService());
-        authenticationProvider.setPasswordEncoder(this.passwordEncoder());
-        return authenticationProvider;
-    }
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+		authenticationProvider.setUserDetailsService(this.userDetailsService());
+		authenticationProvider.setPasswordEncoder(this.passwordEncoder());
+		return authenticationProvider;
+	}
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendUserTagFriendPostRepositoryImpl extends ExtendEntityRepositoryBase<UserTagFriendPost> implements ExtendUserTagFriendPostRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<UserTagFriendPost> searchUserTagFriendPost(Map<String, String> queries) {

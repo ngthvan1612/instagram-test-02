@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendUserGroupMessageRepositoryImpl extends ExtendEntityRepositoryBase<UserGroupMessage> implements ExtendUserGroupMessageRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<UserGroupMessage> searchUserGroupMessage(Map<String, String> queries) {

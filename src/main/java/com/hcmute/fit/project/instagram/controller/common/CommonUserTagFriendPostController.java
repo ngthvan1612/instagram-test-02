@@ -20,57 +20,57 @@ import java.util.Map;
 @RequestMapping("api/common/user-tag-friend-post")
 public class CommonUserTagFriendPostController {
 
-    @Autowired
-    private UserTagFriendPostService userTagFriendPostService;
+  @Autowired
+  private UserTagFriendPostService userTagFriendPostService;
 
-    public CommonUserTagFriendPostController() {
+  public CommonUserTagFriendPostController() {
 
-    }
+  }
 
-    @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract searchUserTagFriendPost(
-            @RequestParam Map<String, String> queries
-    ) {
-        ListUserTagFriendPostResponse listUserTagFriendPostResponse = this.userTagFriendPostService.searchUserTagFriendPosts(queries);
-        return listUserTagFriendPostResponse;
-    }
+  @GetMapping("")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract searchUserTagFriendPost(
+    @RequestParam Map<String, String> queries
+  ) {
+    ListUserTagFriendPostResponse listUserTagFriendPostResponse = this.userTagFriendPostService.searchUserTagFriendPosts(queries);
+    return listUserTagFriendPostResponse;
+  }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract getUserTagFriendPost(
-            @PathVariable Integer id
-    ) {
-        GetUserTagFriendPostResponse getUserTagFriendPostResponse = this.userTagFriendPostService.getUserTagFriendPostById(id);
-        return getUserTagFriendPostResponse;
-    }
+  @GetMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract getUserTagFriendPost(
+    @PathVariable Integer id
+  ) {
+    GetUserTagFriendPostResponse getUserTagFriendPostResponse = this.userTagFriendPostService.getUserTagFriendPostById(id);
+    return getUserTagFriendPostResponse;
+  }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseBaseAbstract createUserTagFriendPost(
-            @RequestBody @Valid CreateUserTagFriendPostRequest request
-    ) {
-        SuccessfulResponse createUserTagFriendPostResponse = this.userTagFriendPostService.createUserTagFriendPost(request);
-        return createUserTagFriendPostResponse;
-    }
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseBaseAbstract createUserTagFriendPost(
+    @RequestBody @Valid CreateUserTagFriendPostRequest request
+  ) {
+    SuccessfulResponse createUserTagFriendPostResponse = this.userTagFriendPostService.createUserTagFriendPost(request);
+    return createUserTagFriendPostResponse;
+  }
+  
+  @PutMapping("{id}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract updateUserTagFriendPost(
+    @PathVariable Integer id,
+    @RequestBody @Valid UpdateUserTagFriendPostRequest request
+  ) {
+    request.setUserTagFriendPostId(id);
+    SuccessfulResponse updateUserTagFriendPostResponse = this.userTagFriendPostService.updateUserTagFriendPost(request);
+    return updateUserTagFriendPostResponse;
+  }
 
-    @PutMapping("{id}/update")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract updateUserTagFriendPost(
-            @PathVariable Integer id,
-            @RequestBody @Valid UpdateUserTagFriendPostRequest request
-    ) {
-        request.setUserTagFriendPostId(id);
-        SuccessfulResponse updateUserTagFriendPostResponse = this.userTagFriendPostService.updateUserTagFriendPost(request);
-        return updateUserTagFriendPostResponse;
-    }
-
-    @DeleteMapping("{id}/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract deleteUserTagFriendPost(
-            @PathVariable Integer id
-    ) {
-        SuccessfulResponse updateUserTagFriendPostResponse = this.userTagFriendPostService.deleteUserTagFriendPost(id);
-        return updateUserTagFriendPostResponse;
-    }
+  @DeleteMapping("{id}/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract deleteUserTagFriendPost(
+    @PathVariable Integer id
+  ) {
+    SuccessfulResponse updateUserTagFriendPostResponse = this.userTagFriendPostService.deleteUserTagFriendPost(id);
+    return updateUserTagFriendPostResponse;
+  }
 }

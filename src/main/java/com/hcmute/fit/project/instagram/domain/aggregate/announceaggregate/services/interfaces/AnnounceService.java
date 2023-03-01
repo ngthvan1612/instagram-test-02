@@ -9,15 +9,11 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface AnnounceService {
-    SuccessfulResponse createAnnounce(CreateAnnounceRequest request);
-
-    GetAnnounceResponse getAnnounceById(Integer id);
-
-    ListAnnounceResponse searchAnnounces(Map<String, String> queries);
-
-    SuccessfulResponse updateAnnounce(UpdateAnnounceRequest request);
-
-    SuccessfulResponse deleteAnnounce(Integer id);
+  SuccessfulResponse createAnnounce(CreateAnnounceRequest request);
+  GetAnnounceResponse getAnnounceById(Integer id);
+  ListAnnounceResponse searchAnnounces(Map<String, String> queries);
+  SuccessfulResponse updateAnnounce(UpdateAnnounceRequest request);
+  SuccessfulResponse deleteAnnounce(Integer id);
 
 
 }

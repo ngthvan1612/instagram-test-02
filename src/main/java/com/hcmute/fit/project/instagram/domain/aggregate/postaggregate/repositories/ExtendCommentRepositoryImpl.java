@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendCommentRepositoryImpl extends ExtendEntityRepositoryBase<Comment> implements ExtendCommentRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<Comment> searchComment(Map<String, String> queries) {

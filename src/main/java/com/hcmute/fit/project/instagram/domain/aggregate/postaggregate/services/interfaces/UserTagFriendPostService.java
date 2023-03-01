@@ -9,15 +9,11 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface UserTagFriendPostService {
-    SuccessfulResponse createUserTagFriendPost(CreateUserTagFriendPostRequest request);
-
-    GetUserTagFriendPostResponse getUserTagFriendPostById(Integer id);
-
-    ListUserTagFriendPostResponse searchUserTagFriendPosts(Map<String, String> queries);
-
-    SuccessfulResponse updateUserTagFriendPost(UpdateUserTagFriendPostRequest request);
-
-    SuccessfulResponse deleteUserTagFriendPost(Integer id);
+  SuccessfulResponse createUserTagFriendPost(CreateUserTagFriendPostRequest request);
+  GetUserTagFriendPostResponse getUserTagFriendPostById(Integer id);
+  ListUserTagFriendPostResponse searchUserTagFriendPosts(Map<String, String> queries);
+  SuccessfulResponse updateUserTagFriendPost(UpdateUserTagFriendPostRequest request);
+  SuccessfulResponse deleteUserTagFriendPost(Integer id);
 
 
 }

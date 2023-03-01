@@ -20,57 +20,57 @@ import java.util.Map;
 @RequestMapping("api/common/post")
 public class CommonPostController {
 
-    @Autowired
-    private PostService postService;
+  @Autowired
+  private PostService postService;
 
-    public CommonPostController() {
+  public CommonPostController() {
 
-    }
+  }
 
-    @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract searchPost(
-            @RequestParam Map<String, String> queries
-    ) {
-        ListPostResponse listPostResponse = this.postService.searchPosts(queries);
-        return listPostResponse;
-    }
+  @GetMapping("")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract searchPost(
+    @RequestParam Map<String, String> queries
+  ) {
+    ListPostResponse listPostResponse = this.postService.searchPosts(queries);
+    return listPostResponse;
+  }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract getPost(
-            @PathVariable Integer id
-    ) {
-        GetPostResponse getPostResponse = this.postService.getPostById(id);
-        return getPostResponse;
-    }
+  @GetMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract getPost(
+    @PathVariable Integer id
+  ) {
+    GetPostResponse getPostResponse = this.postService.getPostById(id);
+    return getPostResponse;
+  }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseBaseAbstract createPost(
-            @RequestBody @Valid CreatePostRequest request
-    ) {
-        SuccessfulResponse createPostResponse = this.postService.createPost(request);
-        return createPostResponse;
-    }
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseBaseAbstract createPost(
+    @RequestBody @Valid CreatePostRequest request
+  ) {
+    SuccessfulResponse createPostResponse = this.postService.createPost(request);
+    return createPostResponse;
+  }
+  
+  @PutMapping("{id}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract updatePost(
+    @PathVariable Integer id,
+    @RequestBody @Valid UpdatePostRequest request
+  ) {
+    request.setPostId(id);
+    SuccessfulResponse updatePostResponse = this.postService.updatePost(request);
+    return updatePostResponse;
+  }
 
-    @PutMapping("{id}/update")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract updatePost(
-            @PathVariable Integer id,
-            @RequestBody @Valid UpdatePostRequest request
-    ) {
-        request.setPostId(id);
-        SuccessfulResponse updatePostResponse = this.postService.updatePost(request);
-        return updatePostResponse;
-    }
-
-    @DeleteMapping("{id}/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract deletePost(
-            @PathVariable Integer id
-    ) {
-        SuccessfulResponse updatePostResponse = this.postService.deletePost(id);
-        return updatePostResponse;
-    }
+  @DeleteMapping("{id}/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract deletePost(
+    @PathVariable Integer id
+  ) {
+    SuccessfulResponse updatePostResponse = this.postService.deletePost(id);
+    return updatePostResponse;
+  }
 }

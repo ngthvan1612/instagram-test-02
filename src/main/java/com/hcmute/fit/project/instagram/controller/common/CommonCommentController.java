@@ -20,57 +20,57 @@ import java.util.Map;
 @RequestMapping("api/common/comment")
 public class CommonCommentController {
 
-    @Autowired
-    private CommentService commentService;
+  @Autowired
+  private CommentService commentService;
 
-    public CommonCommentController() {
+  public CommonCommentController() {
 
-    }
+  }
 
-    @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract searchComment(
-            @RequestParam Map<String, String> queries
-    ) {
-        ListCommentResponse listCommentResponse = this.commentService.searchComments(queries);
-        return listCommentResponse;
-    }
+  @GetMapping("")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract searchComment(
+    @RequestParam Map<String, String> queries
+  ) {
+    ListCommentResponse listCommentResponse = this.commentService.searchComments(queries);
+    return listCommentResponse;
+  }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract getComment(
-            @PathVariable Integer id
-    ) {
-        GetCommentResponse getCommentResponse = this.commentService.getCommentById(id);
-        return getCommentResponse;
-    }
+  @GetMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract getComment(
+    @PathVariable Integer id
+  ) {
+    GetCommentResponse getCommentResponse = this.commentService.getCommentById(id);
+    return getCommentResponse;
+  }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseBaseAbstract createComment(
-            @RequestBody @Valid CreateCommentRequest request
-    ) {
-        SuccessfulResponse createCommentResponse = this.commentService.createComment(request);
-        return createCommentResponse;
-    }
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseBaseAbstract createComment(
+    @RequestBody @Valid CreateCommentRequest request
+  ) {
+    SuccessfulResponse createCommentResponse = this.commentService.createComment(request);
+    return createCommentResponse;
+  }
+  
+  @PutMapping("{id}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract updateComment(
+    @PathVariable Integer id,
+    @RequestBody @Valid UpdateCommentRequest request
+  ) {
+    request.setCommentId(id);
+    SuccessfulResponse updateCommentResponse = this.commentService.updateComment(request);
+    return updateCommentResponse;
+  }
 
-    @PutMapping("{id}/update")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract updateComment(
-            @PathVariable Integer id,
-            @RequestBody @Valid UpdateCommentRequest request
-    ) {
-        request.setCommentId(id);
-        SuccessfulResponse updateCommentResponse = this.commentService.updateComment(request);
-        return updateCommentResponse;
-    }
-
-    @DeleteMapping("{id}/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract deleteComment(
-            @PathVariable Integer id
-    ) {
-        SuccessfulResponse updateCommentResponse = this.commentService.deleteComment(id);
-        return updateCommentResponse;
-    }
+  @DeleteMapping("{id}/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract deleteComment(
+    @PathVariable Integer id
+  ) {
+    SuccessfulResponse updateCommentResponse = this.commentService.deleteComment(id);
+    return updateCommentResponse;
+  }
 }

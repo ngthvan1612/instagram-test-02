@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class UpdateFollowerRequest {
-    @JsonIgnore
-    private Integer followerId;
-
-
-    private Integer userId;
-    private Integer followId;
+  @JsonIgnore
+  private Integer followerId;
+  
+  
+  private Integer userId;
+  private Integer followId;
 }

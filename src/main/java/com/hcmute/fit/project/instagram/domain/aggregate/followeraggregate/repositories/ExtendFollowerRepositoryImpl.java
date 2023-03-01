@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendFollowerRepositoryImpl extends ExtendEntityRepositoryBase<Follower> implements ExtendFollowerRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<Follower> searchFollower(Map<String, String> queries) {

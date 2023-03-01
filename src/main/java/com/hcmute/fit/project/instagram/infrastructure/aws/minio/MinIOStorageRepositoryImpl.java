@@ -33,7 +33,8 @@ public class MinIOStorageRepositoryImpl implements StorageRepository {
         int pos = uploadFileName.lastIndexOf(".");
         if (0 < pos && pos < uploadFileName.length()) {
             return uploadFileName.substring(0, pos) + UUID.randomUUID() + uploadFileName.substring(pos);
-        } else {
+        }
+        else {
             return uploadFileName + UUID.randomUUID() + ".jpg";
         }
     }

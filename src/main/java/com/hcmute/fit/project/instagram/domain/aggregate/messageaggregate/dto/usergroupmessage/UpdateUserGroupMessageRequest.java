@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class UpdateUserGroupMessageRequest {
-    @JsonIgnore
-    private Integer userGroupMessageId;
-
-
-    private Integer groupId;
-    private Integer memberId;
+  @JsonIgnore
+  private Integer userGroupMessageId;
+  
+  
+  private Integer groupId;
+  private Integer memberId;
 }

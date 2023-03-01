@@ -9,15 +9,11 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface GroupMessageService {
-    SuccessfulResponse createGroupMessage(CreateGroupMessageRequest request);
-
-    GetGroupMessageResponse getGroupMessageById(Integer id);
-
-    ListGroupMessageResponse searchGroupMessages(Map<String, String> queries);
-
-    SuccessfulResponse updateGroupMessage(UpdateGroupMessageRequest request);
-
-    SuccessfulResponse deleteGroupMessage(Integer id);
+  SuccessfulResponse createGroupMessage(CreateGroupMessageRequest request);
+  GetGroupMessageResponse getGroupMessageById(Integer id);
+  ListGroupMessageResponse searchGroupMessages(Map<String, String> queries);
+  SuccessfulResponse updateGroupMessage(UpdateGroupMessageRequest request);
+  SuccessfulResponse deleteGroupMessage(Integer id);
 
 
 }

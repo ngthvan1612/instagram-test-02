@@ -24,180 +24,185 @@ import java.util.Optional;
 
 @Service
 public class UserTagFriendPostServiceImpl implements UserTagFriendPostService {
-    private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  
+  @Autowired
+  private UserTagFriendPostRepository userTagFriendPostRepository;
+  
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private PostRepository postRepository;
+  @Autowired
+  private StorageRepository storageRepository;
 
-    @Autowired
-    private UserTagFriendPostRepository userTagFriendPostRepository;
+  public UserTagFriendPostServiceImpl() {
 
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private StorageRepository storageRepository;
+  }
 
-    public UserTagFriendPostServiceImpl() {
+  //TODO: Validate with annotation
+  //TODO: check fk before create & update
+  //TODO: update unique column for delete
+  //TODO: swagger
+  //TODO: authorize
+  //TODO: hash password
+  //TODO: loggggggggg
 
+  @Override
+  public SuccessfulResponse createUserTagFriendPost(CreateUserTagFriendPostRequest request) {
+    //Validate
+    
+
+    //Check null
+    
+    Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
+    Post post = null;
+    
+    if (optionalPost.isEmpty()) {
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Bài đăng nào với postId = " + request.getPostId());
+    }
+    else {
+      post = optionalPost.get();
+    }
+    
+    
+    Optional<User> optionalFriend = this.userRepository.findById(request.getFriendId());
+    User friend = null;
+    
+    if (optionalFriend.isEmpty()) {
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại người dùng nào với friendId = " + request.getFriendId());
+    }
+    else {
+      friend = optionalFriend.get();
+    }
+    
+    
+    UserTagFriendPost userTagFriendPost = new UserTagFriendPost();
+    
+    userTagFriendPost.setPost(post);
+    userTagFriendPost.setFriend(friend);
+
+    //Save to database
+    this.userTagFriendPostRepository.save(userTagFriendPost);
+
+    //Return
+    UserTagFriendPostResponse userTagFriendPostDTO = new UserTagFriendPostResponse(userTagFriendPost);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(userTagFriendPostDTO);
+    response.addMessage("Tạo Tag bạn bè của bài đăng thành công");
+
+    LOG.info("Created userTagFriendPost with id = " + userTagFriendPost.getId());
+    return response;
+  }
+
+  @Override
+  public GetUserTagFriendPostResponse getUserTagFriendPostById(Integer id) {
+    if (!this.userTagFriendPostRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Tag bạn bè của bài đăng nào với id là " + id);
     }
 
-    //TODO: Validate with annotation
-    //TODO: check fk before create & update
-    //TODO: update unique column for delete
-    //TODO: swagger
-    //TODO: authorize
-    //TODO: hash password
-    //TODO: loggggggggg
+    UserTagFriendPost userTagFriendPost = this.userTagFriendPostRepository.findById(id).get();
+    UserTagFriendPostResponse userTagFriendPostDTO = new UserTagFriendPostResponse(userTagFriendPost);
+    GetUserTagFriendPostResponse response = new GetUserTagFriendPostResponse(userTagFriendPostDTO);
 
-    @Override
-    public SuccessfulResponse createUserTagFriendPost(CreateUserTagFriendPostRequest request) {
-        //Validate
+    response.addMessage("Lấy dữ liệu thành công");
 
+    return response;
+  }
 
-        //Check null
+  @Override
+  public ListUserTagFriendPostResponse searchUserTagFriendPosts(Map<String, String> queries) {
+    List<UserTagFriendPostResponse> listUserTagFriendPostResponses = this.userTagFriendPostRepository.searchUserTagFriendPost(queries)
+          .stream().map(userTagFriendPost -> new UserTagFriendPostResponse(userTagFriendPost)).toList();
+    
+    ListUserTagFriendPostResponse response = new ListUserTagFriendPostResponse(listUserTagFriendPostResponses);
+    response.addMessage("Lấy dữ liệu thành công");
 
-        Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
-        Post post = null;
+    return response;
+  }
 
-        if (optionalPost.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Bài đăng nào với postId = " + request.getPostId());
-        } else {
-            post = optionalPost.get();
-        }
-
-
-        Optional<User> optionalFriend = this.userRepository.findById(request.getFriendId());
-        User friend = null;
-
-        if (optionalFriend.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại người dùng nào với friendId = " + request.getFriendId());
-        } else {
-            friend = optionalFriend.get();
-        }
-
-
-        UserTagFriendPost userTagFriendPost = new UserTagFriendPost();
-
-        userTagFriendPost.setPost(post);
-        userTagFriendPost.setFriend(friend);
-
-        //Save to database
-        this.userTagFriendPostRepository.save(userTagFriendPost);
-
-        //Return
-        UserTagFriendPostResponse userTagFriendPostDTO = new UserTagFriendPostResponse(userTagFriendPost);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(userTagFriendPostDTO);
-        response.addMessage("Tạo Tag bạn bè của bài đăng thành công");
-
-        LOG.info("Created userTagFriendPost with id = " + userTagFriendPost.getId());
-        return response;
+  @Override
+  public SuccessfulResponse updateUserTagFriendPost(UpdateUserTagFriendPostRequest request) {
+    //Check record exists
+    if (!this.userTagFriendPostRepository.existsById(request.getUserTagFriendPostId())) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Tag bạn bè của bài đăng nào với id là " + request.getUserTagFriendPostId());
     }
 
-    @Override
-    public GetUserTagFriendPostResponse getUserTagFriendPostById(Integer id) {
-        if (!this.userTagFriendPostRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Tag bạn bè của bài đăng nào với id là " + id);
-        }
+    //Read data from request
+    UserTagFriendPost userTagFriendPost = this.userTagFriendPostRepository.findById(request.getUserTagFriendPostId()).get();
+    
+    Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
+    Post post = null;
+    
+    if (optionalPost.isEmpty()) { 
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Tag bạn bè của bài đăng nào với postId = " + request.getPostId());
+    }
+    else {
+      post = optionalPost.get();
+    }
+    
+    
+    Optional<User> optionalFriend = this.userRepository.findById(request.getFriendId());
+    User friend = null;
+    
+    if (optionalFriend.isEmpty()) { 
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Tag bạn bè của bài đăng nào với friendId = " + request.getFriendId());
+    }
+    else {
+      friend = optionalFriend.get();
+    }
+    
+    
+    
+    userTagFriendPost.setPost(post);
+    userTagFriendPost.setFriend(friend);
 
-        UserTagFriendPost userTagFriendPost = this.userTagFriendPostRepository.findById(id).get();
-        UserTagFriendPostResponse userTagFriendPostDTO = new UserTagFriendPostResponse(userTagFriendPost);
-        GetUserTagFriendPostResponse response = new GetUserTagFriendPostResponse(userTagFriendPostDTO);
+    //Validate unique
+    
 
-        response.addMessage("Lấy dữ liệu thành công");
+    //Update last changed time
+    userTagFriendPost.setLastUpdatedAt(new Date());
 
-        return response;
+    //Store
+    this.userTagFriendPostRepository.save(userTagFriendPost);
+
+    //Return
+    UserTagFriendPostResponse userTagFriendPostDTO = new UserTagFriendPostResponse(userTagFriendPost);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(userTagFriendPostDTO);
+    response.addMessage("Cập nhật Tag bạn bè của bài đăng thành công");
+
+    LOG.info("Updated userTagFriendPost with id = " + userTagFriendPost.getId());
+    return response;
+  }
+  
+
+  @Override
+  public SuccessfulResponse deleteUserTagFriendPost(Integer id) {
+    if (!this.userTagFriendPostRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Tag bạn bè của bài đăng nào với id là " + id);
     }
 
-    @Override
-    public ListUserTagFriendPostResponse searchUserTagFriendPosts(Map<String, String> queries) {
-        List<UserTagFriendPostResponse> listUserTagFriendPostResponses = this.userTagFriendPostRepository.searchUserTagFriendPost(queries)
-                .stream().map(userTagFriendPost -> new UserTagFriendPostResponse(userTagFriendPost)).toList();
+    UserTagFriendPost userTagFriendPost = this.userTagFriendPostRepository.findById(id).get();
+    userTagFriendPost.setDeletedAt(new Date());
+    
+    this.userTagFriendPostRepository.save(userTagFriendPost);
 
-        ListUserTagFriendPostResponse response = new ListUserTagFriendPostResponse(listUserTagFriendPostResponses);
-        response.addMessage("Lấy dữ liệu thành công");
+    SuccessfulResponse response = new SuccessfulResponse();
+    response.addMessage("Xóa Tag bạn bè của bài đăng thành công");
 
-        return response;
-    }
-
-    @Override
-    public SuccessfulResponse updateUserTagFriendPost(UpdateUserTagFriendPostRequest request) {
-        //Check record exists
-        if (!this.userTagFriendPostRepository.existsById(request.getUserTagFriendPostId())) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Tag bạn bè của bài đăng nào với id là " + request.getUserTagFriendPostId());
-        }
-
-        //Read data from request
-        UserTagFriendPost userTagFriendPost = this.userTagFriendPostRepository.findById(request.getUserTagFriendPostId()).get();
-
-        Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
-        Post post = null;
-
-        if (optionalPost.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Tag bạn bè của bài đăng nào với postId = " + request.getPostId());
-        } else {
-            post = optionalPost.get();
-        }
-
-
-        Optional<User> optionalFriend = this.userRepository.findById(request.getFriendId());
-        User friend = null;
-
-        if (optionalFriend.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Tag bạn bè của bài đăng nào với friendId = " + request.getFriendId());
-        } else {
-            friend = optionalFriend.get();
-        }
-
-
-        userTagFriendPost.setPost(post);
-        userTagFriendPost.setFriend(friend);
-
-        //Validate unique
-
-
-        //Update last changed time
-        userTagFriendPost.setLastUpdatedAt(new Date());
-
-        //Store
-        this.userTagFriendPostRepository.save(userTagFriendPost);
-
-        //Return
-        UserTagFriendPostResponse userTagFriendPostDTO = new UserTagFriendPostResponse(userTagFriendPost);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(userTagFriendPostDTO);
-        response.addMessage("Cập nhật Tag bạn bè của bài đăng thành công");
-
-        LOG.info("Updated userTagFriendPost with id = " + userTagFriendPost.getId());
-        return response;
-    }
-
-
-    @Override
-    public SuccessfulResponse deleteUserTagFriendPost(Integer id) {
-        if (!this.userTagFriendPostRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Tag bạn bè của bài đăng nào với id là " + id);
-        }
-
-        UserTagFriendPost userTagFriendPost = this.userTagFriendPostRepository.findById(id).get();
-        userTagFriendPost.setDeletedAt(new Date());
-
-        this.userTagFriendPostRepository.save(userTagFriendPost);
-
-        SuccessfulResponse response = new SuccessfulResponse();
-        response.addMessage("Xóa Tag bạn bè của bài đăng thành công");
-
-        LOG.info("Deleted userTagFriendPost with id = " + userTagFriendPost.getId());
-        return response;
-    }
-
+    LOG.info("Deleted userTagFriendPost with id = " + userTagFriendPost.getId());
+    return response;
+  }
+  
 }
   

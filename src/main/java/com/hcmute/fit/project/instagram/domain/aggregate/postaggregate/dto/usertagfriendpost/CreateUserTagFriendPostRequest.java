@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class CreateUserTagFriendPostRequest {
-
-    private Integer postId;
-    private Integer friendId;
-
+  
+  private Integer postId;
+  private Integer friendId;
+  
 }

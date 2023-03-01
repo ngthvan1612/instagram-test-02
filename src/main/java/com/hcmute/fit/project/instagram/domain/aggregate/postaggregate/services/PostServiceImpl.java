@@ -22,158 +22,161 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
-    private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  
+  @Autowired
+  private PostRepository postRepository;
+  
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private StorageRepository storageRepository;
 
-    @Autowired
-    private PostRepository postRepository;
+  public PostServiceImpl() {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private StorageRepository storageRepository;
+  }
 
-    public PostServiceImpl() {
+  //TODO: Validate with annotation
+  //TODO: check fk before create & update
+  //TODO: update unique column for delete
+  //TODO: swagger
+  //TODO: authorize
+  //TODO: hash password
+  //TODO: loggggggggg
 
+  @Override
+  public SuccessfulResponse createPost(CreatePostRequest request) {
+    //Validate
+    
+
+    //Check null
+    
+    Optional<User> optionalAuthor = this.userRepository.findById(request.getAuthorId());
+    User author = null;
+    
+    if (optionalAuthor.isEmpty()) {
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại người dùng nào với authorId = " + request.getAuthorId());
+    }
+    else {
+      author = optionalAuthor.get();
+    }
+    
+    
+    Post post = new Post();
+    
+    post.setContent(request.getContent());
+    post.setPrivacy(request.getPrivacy());
+    post.setAuthor(author);
+
+    //Save to database
+    this.postRepository.save(post);
+
+    //Return
+    PostResponse postDTO = new PostResponse(post);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(postDTO);
+    response.addMessage("Tạo Bài đăng thành công");
+
+    LOG.info("Created post with id = " + post.getId());
+    return response;
+  }
+
+  @Override
+  public GetPostResponse getPostById(Integer id) {
+    if (!this.postRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Bài đăng nào với id là " + id);
     }
 
-    //TODO: Validate with annotation
-    //TODO: check fk before create & update
-    //TODO: update unique column for delete
-    //TODO: swagger
-    //TODO: authorize
-    //TODO: hash password
-    //TODO: loggggggggg
+    Post post = this.postRepository.findById(id).get();
+    PostResponse postDTO = new PostResponse(post);
+    GetPostResponse response = new GetPostResponse(postDTO);
 
-    @Override
-    public SuccessfulResponse createPost(CreatePostRequest request) {
-        //Validate
+    response.addMessage("Lấy dữ liệu thành công");
 
+    return response;
+  }
 
-        //Check null
+  @Override
+  public ListPostResponse searchPosts(Map<String, String> queries) {
+    List<PostResponse> listPostResponses = this.postRepository.searchPost(queries)
+          .stream().map(post -> new PostResponse(post)).toList();
+    
+    ListPostResponse response = new ListPostResponse(listPostResponses);
+    response.addMessage("Lấy dữ liệu thành công");
 
-        Optional<User> optionalAuthor = this.userRepository.findById(request.getAuthorId());
-        User author = null;
+    return response;
+  }
 
-        if (optionalAuthor.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại người dùng nào với authorId = " + request.getAuthorId());
-        } else {
-            author = optionalAuthor.get();
-        }
-
-
-        Post post = new Post();
-
-        post.setContent(request.getContent());
-        post.setPrivacy(request.getPrivacy());
-        post.setAuthor(author);
-
-        //Save to database
-        this.postRepository.save(post);
-
-        //Return
-        PostResponse postDTO = new PostResponse(post);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(postDTO);
-        response.addMessage("Tạo Bài đăng thành công");
-
-        LOG.info("Created post with id = " + post.getId());
-        return response;
+  @Override
+  public SuccessfulResponse updatePost(UpdatePostRequest request) {
+    //Check record exists
+    if (!this.postRepository.existsById(request.getPostId())) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Bài đăng nào với id là " + request.getPostId());
     }
 
-    @Override
-    public GetPostResponse getPostById(Integer id) {
-        if (!this.postRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Bài đăng nào với id là " + id);
-        }
+    //Read data from request
+    Post post = this.postRepository.findById(request.getPostId()).get();
+    
+    Optional<User> optionalAuthor = this.userRepository.findById(request.getAuthorId());
+    User author = null;
+    
+    if (optionalAuthor.isEmpty()) { 
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Bài đăng nào với authorId = " + request.getAuthorId());
+    }
+    else {
+      author = optionalAuthor.get();
+    }
+    
+    
+    
+    post.setContent(request.getContent());
+    post.setPrivacy(request.getPrivacy());
+    post.setAuthor(author);
 
-        Post post = this.postRepository.findById(id).get();
-        PostResponse postDTO = new PostResponse(post);
-        GetPostResponse response = new GetPostResponse(postDTO);
+    //Validate unique
+    
 
-        response.addMessage("Lấy dữ liệu thành công");
+    //Update last changed time
+    post.setLastUpdatedAt(new Date());
 
-        return response;
+    //Store
+    this.postRepository.save(post);
+
+    //Return
+    PostResponse postDTO = new PostResponse(post);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(postDTO);
+    response.addMessage("Cập nhật Bài đăng thành công");
+
+    LOG.info("Updated post with id = " + post.getId());
+    return response;
+  }
+  
+
+  @Override
+  public SuccessfulResponse deletePost(Integer id) {
+    if (!this.postRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Bài đăng nào với id là " + id);
     }
 
-    @Override
-    public ListPostResponse searchPosts(Map<String, String> queries) {
-        List<PostResponse> listPostResponses = this.postRepository.searchPost(queries)
-                .stream().map(post -> new PostResponse(post)).toList();
+    Post post = this.postRepository.findById(id).get();
+    post.setDeletedAt(new Date());
+    
+    this.postRepository.save(post);
 
-        ListPostResponse response = new ListPostResponse(listPostResponses);
-        response.addMessage("Lấy dữ liệu thành công");
+    SuccessfulResponse response = new SuccessfulResponse();
+    response.addMessage("Xóa Bài đăng thành công");
 
-        return response;
-    }
-
-    @Override
-    public SuccessfulResponse updatePost(UpdatePostRequest request) {
-        //Check record exists
-        if (!this.postRepository.existsById(request.getPostId())) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Bài đăng nào với id là " + request.getPostId());
-        }
-
-        //Read data from request
-        Post post = this.postRepository.findById(request.getPostId()).get();
-
-        Optional<User> optionalAuthor = this.userRepository.findById(request.getAuthorId());
-        User author = null;
-
-        if (optionalAuthor.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Bài đăng nào với authorId = " + request.getAuthorId());
-        } else {
-            author = optionalAuthor.get();
-        }
-
-
-        post.setContent(request.getContent());
-        post.setPrivacy(request.getPrivacy());
-        post.setAuthor(author);
-
-        //Validate unique
-
-
-        //Update last changed time
-        post.setLastUpdatedAt(new Date());
-
-        //Store
-        this.postRepository.save(post);
-
-        //Return
-        PostResponse postDTO = new PostResponse(post);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(postDTO);
-        response.addMessage("Cập nhật Bài đăng thành công");
-
-        LOG.info("Updated post with id = " + post.getId());
-        return response;
-    }
-
-
-    @Override
-    public SuccessfulResponse deletePost(Integer id) {
-        if (!this.postRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Bài đăng nào với id là " + id);
-        }
-
-        Post post = this.postRepository.findById(id).get();
-        post.setDeletedAt(new Date());
-
-        this.postRepository.save(post);
-
-        SuccessfulResponse response = new SuccessfulResponse();
-        response.addMessage("Xóa Bài đăng thành công");
-
-        LOG.info("Deleted post with id = " + post.getId());
-        return response;
-    }
-
+    LOG.info("Deleted post with id = " + post.getId());
+    return response;
+  }
+  
 }
   

@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/auth/login")
 public class LoginController {
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    public LoginController() {
+  public LoginController() {
 
-    }
+  }
 
-    @PostMapping
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        LoginResponse response = this.userService.authenticate(request);
-        return response;
-    }
+  @PostMapping
+  public LoginResponse login(@RequestBody LoginRequest request) {
+    LoginResponse response = this.userService.authenticate(request);
+    return response;
+  }
 }

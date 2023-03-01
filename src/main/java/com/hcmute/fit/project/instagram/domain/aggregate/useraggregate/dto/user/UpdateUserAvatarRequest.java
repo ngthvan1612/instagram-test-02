@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class UpdateUserAvatarRequest {
-    private Integer userId;
-    private byte[] avatarBufferByteArray;
-    private String uploadFileName;
+  private Integer userId;
+  private byte[] avatarBufferByteArray;
+  private String uploadFileName;
 
-    public UpdateUserAvatarRequest() {
-
-    }
+  public UpdateUserAvatarRequest() {
+    
+  }
 }

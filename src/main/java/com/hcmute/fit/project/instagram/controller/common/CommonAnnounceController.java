@@ -20,57 +20,57 @@ import java.util.Map;
 @RequestMapping("api/common/announce")
 public class CommonAnnounceController {
 
-    @Autowired
-    private AnnounceService announceService;
+  @Autowired
+  private AnnounceService announceService;
 
-    public CommonAnnounceController() {
+  public CommonAnnounceController() {
 
-    }
+  }
 
-    @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract searchAnnounce(
-            @RequestParam Map<String, String> queries
-    ) {
-        ListAnnounceResponse listAnnounceResponse = this.announceService.searchAnnounces(queries);
-        return listAnnounceResponse;
-    }
+  @GetMapping("")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract searchAnnounce(
+    @RequestParam Map<String, String> queries
+  ) {
+    ListAnnounceResponse listAnnounceResponse = this.announceService.searchAnnounces(queries);
+    return listAnnounceResponse;
+  }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract getAnnounce(
-            @PathVariable Integer id
-    ) {
-        GetAnnounceResponse getAnnounceResponse = this.announceService.getAnnounceById(id);
-        return getAnnounceResponse;
-    }
+  @GetMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract getAnnounce(
+    @PathVariable Integer id
+  ) {
+    GetAnnounceResponse getAnnounceResponse = this.announceService.getAnnounceById(id);
+    return getAnnounceResponse;
+  }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseBaseAbstract createAnnounce(
-            @RequestBody @Valid CreateAnnounceRequest request
-    ) {
-        SuccessfulResponse createAnnounceResponse = this.announceService.createAnnounce(request);
-        return createAnnounceResponse;
-    }
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseBaseAbstract createAnnounce(
+    @RequestBody @Valid CreateAnnounceRequest request
+  ) {
+    SuccessfulResponse createAnnounceResponse = this.announceService.createAnnounce(request);
+    return createAnnounceResponse;
+  }
+  
+  @PutMapping("{id}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract updateAnnounce(
+    @PathVariable Integer id,
+    @RequestBody @Valid UpdateAnnounceRequest request
+  ) {
+    request.setAnnounceId(id);
+    SuccessfulResponse updateAnnounceResponse = this.announceService.updateAnnounce(request);
+    return updateAnnounceResponse;
+  }
 
-    @PutMapping("{id}/update")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract updateAnnounce(
-            @PathVariable Integer id,
-            @RequestBody @Valid UpdateAnnounceRequest request
-    ) {
-        request.setAnnounceId(id);
-        SuccessfulResponse updateAnnounceResponse = this.announceService.updateAnnounce(request);
-        return updateAnnounceResponse;
-    }
-
-    @DeleteMapping("{id}/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract deleteAnnounce(
-            @PathVariable Integer id
-    ) {
-        SuccessfulResponse updateAnnounceResponse = this.announceService.deleteAnnounce(id);
-        return updateAnnounceResponse;
-    }
+  @DeleteMapping("{id}/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract deleteAnnounce(
+    @PathVariable Integer id
+  ) {
+    SuccessfulResponse updateAnnounceResponse = this.announceService.deleteAnnounce(id);
+    return updateAnnounceResponse;
+  }
 }

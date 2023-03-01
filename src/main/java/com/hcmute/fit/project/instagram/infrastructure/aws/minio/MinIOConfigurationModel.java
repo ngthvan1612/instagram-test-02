@@ -16,15 +16,15 @@ import org.springframework.stereotype.Component;
 @Data
 public class MinIOConfigurationModel {
 
-    @Value("${aws.minio.end-point}")
-    private String endPoint;
+  @Value("${aws.minio.end-point}")
+  private String endPoint;
 
-    @Value("${aws.minio.access-key}")
-    private String accessKey;
+  @Value("${aws.minio.access-key}")
+  private String accessKey;
 
-    @Value("${aws.minio.secret-key}")
-    private String secretKey;
+  @Value("${aws.minio.secret-key}")
+  private String secretKey;
 
-    @Value("${aws.minio.default-bucket}")
-    private String defaultBucket;
+  @Value("${aws.minio.default-bucket}")
+  private String defaultBucket;
 }

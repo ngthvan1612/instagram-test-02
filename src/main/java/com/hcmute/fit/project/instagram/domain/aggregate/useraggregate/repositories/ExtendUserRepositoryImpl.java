@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendUserRepositoryImpl extends ExtendEntityRepositoryBase<User> implements ExtendUserRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<User> searchUser(Map<String, String> queries) {

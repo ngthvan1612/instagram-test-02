@@ -3,8 +3,8 @@ package com.hcmute.fit.project.instagram.domain.aggregate.postaggregate.dto.comm
 import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 
 public class GetCommentResponse extends SuccessfulResponse {
-    public GetCommentResponse(CommentResponse commentResponse) {
-        super();
-        this.setData(commentResponse);
-    }
+  public GetCommentResponse(CommentResponse commentResponse) {
+    super();
+    this.setData(commentResponse);
+  }
 }

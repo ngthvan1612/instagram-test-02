@@ -3,8 +3,8 @@ package com.hcmute.fit.project.instagram.domain.aggregate.messageaggregate.dto.g
 import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 
 public class GetGroupMessageResponse extends SuccessfulResponse {
-    public GetGroupMessageResponse(GroupMessageResponse groupMessageResponse) {
-        super();
-        this.setData(groupMessageResponse);
-    }
+  public GetGroupMessageResponse(GroupMessageResponse groupMessageResponse) {
+    super();
+    this.setData(groupMessageResponse);
+  }
 }

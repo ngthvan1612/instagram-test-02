@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class CreateFollowerRequest {
-
-    private Integer userId;
-    private Integer followId;
-
+  
+  private Integer userId;
+  private Integer followId;
+  
 }

@@ -24,192 +24,195 @@ import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
-    private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  private final static Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
+  
+  @Autowired
+  private CommentRepository commentRepository;
+  
+  @Autowired
+  private PostRepository postRepository;
+  @Autowired
+  private UserRepository userRepository;
+  @Autowired
+  private StorageRepository storageRepository;
 
-    @Autowired
-    private CommentRepository commentRepository;
+  public CommentServiceImpl() {
 
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private StorageRepository storageRepository;
+  }
 
-    public CommentServiceImpl() {
+  //TODO: Validate with annotation
+  //TODO: check fk before create & update
+  //TODO: update unique column for delete
+  //TODO: swagger
+  //TODO: authorize
+  //TODO: hash password
+  //TODO: loggggggggg
 
+  @Override
+  public SuccessfulResponse createComment(CreateCommentRequest request) {
+    //Validate
+    
+
+    //Check null
+    
+    Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
+    User user = null;
+    
+    if (optionalUser.isEmpty()) {
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại người dùng nào với userId = " + request.getUserId());
+    }
+    else {
+      user = optionalUser.get();
+    }
+    
+    
+    Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
+    Post post = null;
+    
+    if (optionalPost.isPresent())
+      post = optionalPost.get();
+    
+    
+    Optional<Comment> optionalParent = this.commentRepository.findById(request.getParentId());
+    Comment parent = null;
+    
+    if (optionalParent.isPresent())
+      parent = optionalParent.get();
+    
+    
+    Comment comment = new Comment();
+    
+    comment.setContent(request.getContent());
+    comment.setUser(user);
+    comment.setPost(post);
+    comment.setParent(parent);
+
+    //Save to database
+    this.commentRepository.save(comment);
+
+    //Return
+    CommentResponse commentDTO = new CommentResponse(comment);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(commentDTO);
+    response.addMessage("Tạo Bình luận thành công");
+
+    LOG.info("Created comment with id = " + comment.getId());
+    return response;
+  }
+
+  @Override
+  public GetCommentResponse getCommentById(Integer id) {
+    if (!this.commentRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Bình luận nào với id là " + id);
     }
 
-    //TODO: Validate with annotation
-    //TODO: check fk before create & update
-    //TODO: update unique column for delete
-    //TODO: swagger
-    //TODO: authorize
-    //TODO: hash password
-    //TODO: loggggggggg
+    Comment comment = this.commentRepository.findById(id).get();
+    CommentResponse commentDTO = new CommentResponse(comment);
+    GetCommentResponse response = new GetCommentResponse(commentDTO);
 
-    @Override
-    public SuccessfulResponse createComment(CreateCommentRequest request) {
-        //Validate
+    response.addMessage("Lấy dữ liệu thành công");
 
+    return response;
+  }
 
-        //Check null
+  @Override
+  public ListCommentResponse searchComments(Map<String, String> queries) {
+    List<CommentResponse> listCommentResponses = this.commentRepository.searchComment(queries)
+          .stream().map(comment -> new CommentResponse(comment)).toList();
+    
+    ListCommentResponse response = new ListCommentResponse(listCommentResponses);
+    response.addMessage("Lấy dữ liệu thành công");
 
-        Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
-        User user = null;
+    return response;
+  }
 
-        if (optionalUser.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại người dùng nào với userId = " + request.getUserId());
-        } else {
-            user = optionalUser.get();
-        }
-
-
-        Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
-        Post post = null;
-
-        if (optionalPost.isPresent())
-            post = optionalPost.get();
-
-
-        Optional<Comment> optionalParent = this.commentRepository.findById(request.getParentId());
-        Comment parent = null;
-
-        if (optionalParent.isPresent())
-            parent = optionalParent.get();
-
-
-        Comment comment = new Comment();
-
-        comment.setContent(request.getContent());
-        comment.setUser(user);
-        comment.setPost(post);
-        comment.setParent(parent);
-
-        //Save to database
-        this.commentRepository.save(comment);
-
-        //Return
-        CommentResponse commentDTO = new CommentResponse(comment);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(commentDTO);
-        response.addMessage("Tạo Bình luận thành công");
-
-        LOG.info("Created comment with id = " + comment.getId());
-        return response;
+  @Override
+  public SuccessfulResponse updateComment(UpdateCommentRequest request) {
+    //Check record exists
+    if (!this.commentRepository.existsById(request.getCommentId())) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Bình luận nào với id là " + request.getCommentId());
     }
 
-    @Override
-    public GetCommentResponse getCommentById(Integer id) {
-        if (!this.commentRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Bình luận nào với id là " + id);
-        }
+    //Read data from request
+    Comment comment = this.commentRepository.findById(request.getCommentId()).get();
+    
+    Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
+    User user = null;
+    
+    if (optionalUser.isEmpty()) { 
+      throw ServiceExceptionFactory.badRequest()
+        .addMessage("Không tồn tại Bình luận nào với userId = " + request.getUserId());
+    }
+    else {
+      user = optionalUser.get();
+    }
+    
+    
+    Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
+    Post post = null;
+    
+    if (optionalPost.isPresent()) {
+      post = optionalPost.get();
+    }
+    
+    
+    Optional<Comment> optionalParent = this.commentRepository.findById(request.getParentId());
+    Comment parent = null;
+    
+    if (optionalParent.isPresent()) {
+      parent = optionalParent.get();
+    }
+    
+    
+    
+    comment.setContent(request.getContent());
+    comment.setUser(user);
+    comment.setPost(post);
+    comment.setParent(parent);
 
-        Comment comment = this.commentRepository.findById(id).get();
-        CommentResponse commentDTO = new CommentResponse(comment);
-        GetCommentResponse response = new GetCommentResponse(commentDTO);
+    //Validate unique
+    
 
-        response.addMessage("Lấy dữ liệu thành công");
+    //Update last changed time
+    comment.setLastUpdatedAt(new Date());
 
-        return response;
+    //Store
+    this.commentRepository.save(comment);
+
+    //Return
+    CommentResponse commentDTO = new CommentResponse(comment);
+    SuccessfulResponse response = new SuccessfulResponse();
+
+    response.setData(commentDTO);
+    response.addMessage("Cập nhật Bình luận thành công");
+
+    LOG.info("Updated comment with id = " + comment.getId());
+    return response;
+  }
+  
+
+  @Override
+  public SuccessfulResponse deleteComment(Integer id) {
+    if (!this.commentRepository.existsById(id)) {
+      throw ServiceExceptionFactory.notFound()
+        .addMessage("Không tìm thấy Bình luận nào với id là " + id);
     }
 
-    @Override
-    public ListCommentResponse searchComments(Map<String, String> queries) {
-        List<CommentResponse> listCommentResponses = this.commentRepository.searchComment(queries)
-                .stream().map(comment -> new CommentResponse(comment)).toList();
+    Comment comment = this.commentRepository.findById(id).get();
+    comment.setDeletedAt(new Date());
+    
+    this.commentRepository.save(comment);
 
-        ListCommentResponse response = new ListCommentResponse(listCommentResponses);
-        response.addMessage("Lấy dữ liệu thành công");
+    SuccessfulResponse response = new SuccessfulResponse();
+    response.addMessage("Xóa Bình luận thành công");
 
-        return response;
-    }
-
-    @Override
-    public SuccessfulResponse updateComment(UpdateCommentRequest request) {
-        //Check record exists
-        if (!this.commentRepository.existsById(request.getCommentId())) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Bình luận nào với id là " + request.getCommentId());
-        }
-
-        //Read data from request
-        Comment comment = this.commentRepository.findById(request.getCommentId()).get();
-
-        Optional<User> optionalUser = this.userRepository.findById(request.getUserId());
-        User user = null;
-
-        if (optionalUser.isEmpty()) {
-            throw ServiceExceptionFactory.badRequest()
-                    .addMessage("Không tồn tại Bình luận nào với userId = " + request.getUserId());
-        } else {
-            user = optionalUser.get();
-        }
-
-
-        Optional<Post> optionalPost = this.postRepository.findById(request.getPostId());
-        Post post = null;
-
-        if (optionalPost.isPresent()) {
-            post = optionalPost.get();
-        }
-
-
-        Optional<Comment> optionalParent = this.commentRepository.findById(request.getParentId());
-        Comment parent = null;
-
-        if (optionalParent.isPresent()) {
-            parent = optionalParent.get();
-        }
-
-
-        comment.setContent(request.getContent());
-        comment.setUser(user);
-        comment.setPost(post);
-        comment.setParent(parent);
-
-        //Validate unique
-
-
-        //Update last changed time
-        comment.setLastUpdatedAt(new Date());
-
-        //Store
-        this.commentRepository.save(comment);
-
-        //Return
-        CommentResponse commentDTO = new CommentResponse(comment);
-        SuccessfulResponse response = new SuccessfulResponse();
-
-        response.setData(commentDTO);
-        response.addMessage("Cập nhật Bình luận thành công");
-
-        LOG.info("Updated comment with id = " + comment.getId());
-        return response;
-    }
-
-
-    @Override
-    public SuccessfulResponse deleteComment(Integer id) {
-        if (!this.commentRepository.existsById(id)) {
-            throw ServiceExceptionFactory.notFound()
-                    .addMessage("Không tìm thấy Bình luận nào với id là " + id);
-        }
-
-        Comment comment = this.commentRepository.findById(id).get();
-        comment.setDeletedAt(new Date());
-
-        this.commentRepository.save(comment);
-
-        SuccessfulResponse response = new SuccessfulResponse();
-        response.addMessage("Xóa Bình luận thành công");
-
-        LOG.info("Deleted comment with id = " + comment.getId());
-        return response;
-    }
-
+    LOG.info("Deleted comment with id = " + comment.getId());
+    return response;
+  }
+  
 }
   

@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendPostRepositoryImpl extends ExtendEntityRepositoryBase<Post> implements ExtendPostRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<Post> searchPost(Map<String, String> queries) {

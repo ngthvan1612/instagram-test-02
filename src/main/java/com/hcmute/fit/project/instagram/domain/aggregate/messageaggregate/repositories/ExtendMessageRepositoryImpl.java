@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendMessageRepositoryImpl extends ExtendEntityRepositoryBase<Message> implements ExtendMessageRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<Message> searchMessage(Map<String, String> queries) {

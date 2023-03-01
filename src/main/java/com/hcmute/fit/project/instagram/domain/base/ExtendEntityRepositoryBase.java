@@ -113,13 +113,17 @@ public class ExtendEntityRepositoryBase<E> {
                     if (isStringType(field.getType())) {
                         Expression<String> expressionQueryValue = criteriaBuilder.literal(value);
                         predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(columnName)), criteriaBuilder.lower(expressionQueryValue)));
-                    } else if (isNumericType(field.getType())) {
+                    }
+                    else if (isNumericType(field.getType())) {
                         predicates.add(criteriaBuilder.equal(root.get(columnName), value));
-                    } else if (isDateType(field.getType())) {
+                    }
+                    else if (isDateType(field.getType())) {
                         predicates.add(criteriaBuilder.equal(root.get(columnName), Date.parse(value)));
-                    } else if (field.getType().isEnum()) {
+                    }
+                    else if (field.getType().isEnum()) {
                         predicates.add(criteriaBuilder.equal(criteriaBuilder.lower(root.get(columnName)), value));
-                    } else {
+                    }
+                    else {
                         Path path = retrievePath(root, tokens, tokens.length - 1);
                         predicates.add(criteriaBuilder.equal(path, value));
                     }
@@ -139,7 +143,8 @@ public class ExtendEntityRepositoryBase<E> {
 
                     if (isNumericType(field.getType())) {
                         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(columnName), Double.parseDouble(value)));
-                    } else {
+                    }
+                    else {
                         predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(columnName), new Date(value)));
                     }
                 }
@@ -150,7 +155,8 @@ public class ExtendEntityRepositoryBase<E> {
 
                     if (isNumericType(field.getType())) {
                         predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(columnName), Double.parseDouble(value)));
-                    } else {
+                    }
+                    else {
                         predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get(columnName), new Date(value)));
                     }
                 }

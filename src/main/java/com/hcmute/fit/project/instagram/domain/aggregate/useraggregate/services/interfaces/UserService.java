@@ -6,19 +6,15 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface UserService {
-    SuccessfulResponse createUser(CreateUserRequest request);
+  SuccessfulResponse createUser(CreateUserRequest request);
+  GetUserResponse getUserById(Integer id);
+  ListUserResponse searchUsers(Map<String, String> queries);
+  SuccessfulResponse updateUser(UpdateUserRequest request);
+  SuccessfulResponse deleteUser(Integer id);
 
-    GetUserResponse getUserById(Integer id);
-
-    ListUserResponse searchUsers(Map<String, String> queries);
-
-    SuccessfulResponse updateUser(UpdateUserRequest request);
-
-    SuccessfulResponse deleteUser(Integer id);
-
-    SuccessfulResponse updateAvatarById(UpdateUserAvatarRequest request);
+  SuccessfulResponse updateAvatarById(UpdateUserAvatarRequest request);
 
 
-    LoginResponse authenticate(LoginRequest request);
+  LoginResponse authenticate(LoginRequest request);
 
 }

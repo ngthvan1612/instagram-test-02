@@ -3,8 +3,8 @@ package com.hcmute.fit.project.instagram.domain.aggregate.postaggregate.dto.user
 import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 
 public class GetUserTagFriendPostResponse extends SuccessfulResponse {
-    public GetUserTagFriendPostResponse(UserTagFriendPostResponse userTagFriendPostResponse) {
-        super();
-        this.setData(userTagFriendPostResponse);
-    }
+  public GetUserTagFriendPostResponse(UserTagFriendPostResponse userTagFriendPostResponse) {
+    super();
+    this.setData(userTagFriendPostResponse);
+  }
 }

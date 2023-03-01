@@ -19,57 +19,57 @@ import java.util.Map;
 @RequestMapping("api/admin/message")
 public class AdminMessageController {
 
-    @Autowired
-    private MessageService messageService;
+  @Autowired
+  private MessageService messageService;
 
-    public AdminMessageController() {
+  public AdminMessageController() {
 
-    }
+  }
 
-    @GetMapping("")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract searchMessage(
-            @RequestParam Map<String, String> queries
-    ) {
-        ListMessageResponse listMessageResponse = this.messageService.searchMessages(queries);
-        return listMessageResponse;
-    }
+  @GetMapping("")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract searchMessage(
+    @RequestParam Map<String, String> queries
+  ) {
+    ListMessageResponse listMessageResponse = this.messageService.searchMessages(queries);
+    return listMessageResponse;
+  }
 
-    @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract getMessage(
-            @PathVariable Integer id
-    ) {
-        GetMessageResponse getMessageResponse = this.messageService.getMessageById(id);
-        return getMessageResponse;
-    }
+  @GetMapping("{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract getMessage(
+    @PathVariable Integer id
+  ) {
+    GetMessageResponse getMessageResponse = this.messageService.getMessageById(id);
+    return getMessageResponse;
+  }
 
-    @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseBaseAbstract createMessage(
-            @RequestBody CreateMessageRequest request
-    ) {
-        SuccessfulResponse createMessageResponse = this.messageService.createMessage(request);
-        return createMessageResponse;
-    }
+  @PostMapping("")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseBaseAbstract createMessage(
+    @RequestBody CreateMessageRequest request
+  ) {
+    SuccessfulResponse createMessageResponse = this.messageService.createMessage(request);
+    return createMessageResponse;
+  }
+  
+  @PutMapping("{id}/update")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract updateMessage(
+    @PathVariable Integer id,
+    @RequestBody UpdateMessageRequest request
+  ) {
+    request.setMessageId(id);
+    SuccessfulResponse updateMessageResponse = this.messageService.updateMessage(request);
+    return updateMessageResponse;
+  }
 
-    @PutMapping("{id}/update")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract updateMessage(
-            @PathVariable Integer id,
-            @RequestBody UpdateMessageRequest request
-    ) {
-        request.setMessageId(id);
-        SuccessfulResponse updateMessageResponse = this.messageService.updateMessage(request);
-        return updateMessageResponse;
-    }
-
-    @DeleteMapping("{id}/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseBaseAbstract deleteMessage(
-            @PathVariable Integer id
-    ) {
-        SuccessfulResponse updateMessageResponse = this.messageService.deleteMessage(id);
-        return updateMessageResponse;
-    }
+  @DeleteMapping("{id}/delete")
+  @ResponseStatus(HttpStatus.OK)
+  public ResponseBaseAbstract deleteMessage(
+    @PathVariable Integer id
+  ) {
+    SuccessfulResponse updateMessageResponse = this.messageService.deleteMessage(id);
+    return updateMessageResponse;
+  }
 }

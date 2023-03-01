@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 public class UpdateUserTagFriendPostRequest {
-    @JsonIgnore
-    private Integer userTagFriendPostId;
-
-
-    private Integer postId;
-    private Integer friendId;
+  @JsonIgnore
+  private Integer userTagFriendPostId;
+  
+  
+  private Integer postId;
+  private Integer friendId;
 }

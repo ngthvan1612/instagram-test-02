@@ -14,9 +14,10 @@ import java.util.Map;
 
 @Repository
 public class ExtendAnnounceRepositoryImpl extends ExtendEntityRepositoryBase<Announce> implements ExtendAnnounceRepository {
-    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
     @PersistenceContext
     private EntityManager entityManager;
+
+    private final String ERROR_INVALID_PARAMETER = "Tham số không hợp lệ";
 
     @Override
     public List<Announce> searchAnnounce(Map<String, String> queries) {

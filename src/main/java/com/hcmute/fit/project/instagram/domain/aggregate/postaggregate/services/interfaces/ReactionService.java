@@ -9,15 +9,11 @@ import com.hcmute.fit.project.instagram.domain.base.SuccessfulResponse;
 import java.util.Map;
 
 public interface ReactionService {
-    SuccessfulResponse createReaction(CreateReactionRequest request);
-
-    GetReactionResponse getReactionById(Integer id);
-
-    ListReactionResponse searchReactions(Map<String, String> queries);
-
-    SuccessfulResponse updateReaction(UpdateReactionRequest request);
-
-    SuccessfulResponse deleteReaction(Integer id);
+  SuccessfulResponse createReaction(CreateReactionRequest request);
+  GetReactionResponse getReactionById(Integer id);
+  ListReactionResponse searchReactions(Map<String, String> queries);
+  SuccessfulResponse updateReaction(UpdateReactionRequest request);
+  SuccessfulResponse deleteReaction(Integer id);
 
 
 }
